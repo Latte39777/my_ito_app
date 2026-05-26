@@ -1,0 +1,48 @@
+import { z } from "zod";
+
+// 1. お題のスキーマ
+export const themeSchema = z.object({
+  id: z.union([z.number(), z.string()]),
+  title: z
+    .string()
+    .min(1, "お題を入力してください")
+    .max(30, "お題は30文字以内です"),
+  low: z
+    .string()
+    .min(1, "1側の基準を入力してください")
+    .max(15, "15文字以内です"),
+  high: z
+    .string()
+    .min(1, "100側の基準を入力してください")
+    .max(15, "15文字以内です"),
+});
+
+// 2. プレイヤー1人分のスキーマ（JSONBの中身をガチガチに検知）
+export const playerSchema = z.object({
+  id: z.string().uuid(),
+  name: z
+    .string()
+    .min(1, "名前を入力してください")
+    .max(12, "名前は12文字以内です"),
+  isHost: z.boolean(),
+  card: z.number().int().min(1).max(100).nullable(),
+  answerText: z.string().max(25, "例えは25文字以内で入力してください"), // 文字数制限
+  isCardOpen: z.boolean(),
+  isOnline: z.boolean(),
+  isSpectating: z.boolean(),
+});
+
+// 3. 部屋全体のスキーマ
+export const roomSchema = z.object({
+  room_code: z.string().length(4), // 部屋コードは絶対に4桁
+  status: z.enum(["waiting", "playing"]), // statusはこの2つの文字しか許さない
+  current_theme: themeSchema.nullable(),
+  life: z.number().int().min(0).max(3), // ライフは0〜3の整数
+  players: z.array(playerSchema), // プレイヤーの配列
+  deck: z.array(z.number().int().min(1).max(100)), // 1〜100の山札配列
+});
+
+// Zodのスキーマから、TypeScript用の「型」を自動で抽出してエクスポート
+export type Theme = z.infer<typeof themeSchema>;
+export type Player = z.infer<typeof playerSchema>;
+export type RoomSchema = z.infer<typeof roomSchema>;

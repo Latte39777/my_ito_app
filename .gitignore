@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 本番の秘密鍵（Supabaseなど）をGitHubに上げないための設定
+.env*.local
+.env.local
+.env
