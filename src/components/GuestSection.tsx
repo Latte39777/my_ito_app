@@ -58,13 +58,13 @@ export function GuestSection({ userName, iconId }: GuestSectionProps) {
         value={roomCode}
         onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
         placeholder="4桁の部屋コード"
-        className="w-full border-none border-b border-gray-300 text-2xl tracking-[4px] py-2 text-black focus:outline-none placeholder-gray-300"
+        className="ito-input text-2xl"
       />
 
       <button
         onClick={handleJoin}
         disabled={loading || roomCode.length !== 4}
-        className="w-full bg-black text-white text-lg font-bold py-3 rounded-lg border-none cursor-pointer disabled:opacity-50 transition-opacity"
+        className="ito-btn ito-btn-dark font-bold py-3 cursor-pointer disabled:opacity-50 transition-opacity"
       >
         {loading ? "確認中..." : "参加する"}
       </button>

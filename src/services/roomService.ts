@@ -7,14 +7,15 @@ export const createRoom = async (
   hostName: string,
   iconId: string,
   initialTheme: Theme,
-): Promise<string> => {
+): Promise<{ roomCode: string; hostId: string }> => {
   const roomCode = Math.random().toString(36).substring(2, 6).toUpperCase();
+  const hostPlayerId = crypto.randomUUID();
 
   // ホストプレイヤーの初期データを作成
   const hostPlayer = {
-    id: crypto.randomUUID(),
+    id: hostPlayerId,
     name: hostName,
-    icon: iconId, // スキーマに合わせてiconを追加
+    icon: iconId,
     isHost: true,
     card: null,
     answerText: "",
@@ -42,5 +43,5 @@ export const createRoom = async (
   const { error } = await supabase.from("rooms").insert(parsed.data);
   if (error) throw new Error(`部屋の作成に失敗しました: ${error.message}`);
 
-  return roomCode;
+  return { roomCode, hostId: hostPlayerId };
 };

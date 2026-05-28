@@ -27,7 +27,7 @@ export const playerSchema = z.object({
   icon: z.string(), // アイコン
   isHost: z.boolean(), // ホストかどうかを管理するフィールド
   card: z.number().int().min(1).max(100).nullable(), // カードは1〜100の整数、最初はnull
-  answerText: z.string().max(25, "例えは25文字以内で入力してください"), // 文字数制限
+  answerText: z.string().max(30, "例えは30文字以内で入力してください"), // 文字数制限
   isCardOpen: z.boolean(), // カードが公開されているかどうかを管理するフィールド
   isOnline: z.boolean(), // オンライン状態を管理するフィールド
   isSpectating: z.boolean(), // 観戦モードかどうかを管理するフィールド
@@ -36,6 +36,7 @@ export const playerSchema = z.object({
 // 3. 部屋全体のスキーマ
 export const roomSchema = z.object({
   room_code: z.string().length(4), // 部屋コードは絶対に4桁
+  round_number: z.number().default(1), // ラウンド数を管理するフィールド（初期値は1）
   status: z.enum(["waiting", "playing"]), // statusはこの2つの文字しか許さない
   current_theme: themeSchema.nullable(), // お題は最初nullで、ゲーム開始と同時にテーマが入る
   life: z.number().int().min(-99).max(99), // ライフは-99〜99の整数

@@ -52,7 +52,7 @@ export function IconSelector({
       </button>
 
       {isOpen && (
-        <div className="absolute top-[110%] left-0 w-[260px] bg-white border-2 border-black rounded-xl shadow-[0_8px_0_0_rgba(0,0,0,1)] z-50 p-3 flex flex-col gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute top-[110%] left-0 w-[260px] ito-box flex flex-col gap-4 p-5 z-10">
           <span className="text-xs font-bold text-gray-500 mb-1">
             アイコンを選択
           </span>

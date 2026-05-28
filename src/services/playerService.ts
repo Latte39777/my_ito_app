@@ -78,3 +78,64 @@ export const openMyCard = async (roomCode: string, myId: string) => {
 
   await safeUpdateRoom(roomCode, { players: updatedPlayers });
 };
+
+// ルームを退出
+export const leaveRoom = async (roomCode: string, playerId: string) => {
+  // 1. 最新のデータを取得
+  const { data: latestRoom, error: fetchError } = await supabase
+    .from("rooms")
+    .select("players")
+    .eq("room_code", roomCode)
+    .single();
+
+  if (fetchError || !latestRoom) {
+    throw new Error("部屋データの取得に失敗しました。");
+  }
+
+  // 2. プレイヤーリストから自分を削除
+  const currentPlayers = (latestRoom.players as unknown as Player[]) || [];
+  const updatedPlayers = currentPlayers.filter((p) => p.id !== playerId);
+
+  await safeUpdateRoom(roomCode, { players: updatedPlayers });
+};
+
+// 部屋に参加する（ゲーム中なら観戦者として参加させる）
+export const joinRoom = async (
+  roomCode: string,
+  playerId: string,
+  name: string,
+  icon: string,
+) => {
+  // 1. 最新のルームデータを取得（ステータスも取得！）
+  const { data: latestRoom, error: fetchError } = await supabase
+    .from("rooms")
+    .select("players, status") // status を追加
+    .eq("room_code", roomCode)
+    .single();
+
+  if (fetchError || !latestRoom) {
+    throw new Error("部屋データの取得に失敗しました。");
+  }
+
+  // 2. プレイヤーリストと現在のゲーム状態を確認
+  const currentPlayers = (latestRoom.players as unknown as Player[]) || [];
+
+  // 💡 ゲーム中("playing")なら観戦者として参加させる
+  const isCurrentlyPlaying = latestRoom.status === "playing";
+
+  const newPlayer: Player = {
+    id: playerId,
+    name,
+    icon,
+    isHost: false,
+    card: null,
+    answerText: "",
+    isCardOpen: false,
+    isOnline: true,
+    isSpectating: isCurrentlyPlaying, // ゲーム中なら true になる
+  };
+
+  const updatedPlayers = [...currentPlayers, newPlayer];
+
+  await safeUpdateRoom(roomCode, { players: updatedPlayers });
+};

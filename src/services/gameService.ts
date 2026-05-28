@@ -1,7 +1,7 @@
 "use server";
 
 import { supabase } from "@/lib/supabase";
-import { Room, roomSchema, Theme } from "@/types/schema";
+import { Player, Room, roomSchema, Theme } from "@/types/schema";
 import {
   createShuffledDeck,
   distributeCards,
@@ -36,6 +36,10 @@ async function safeUpdateRoom(roomCode: string, rawData: Partial<Room>) {
 // ゲームを開始する（待機室でホストが操作）
 export const startGame = async (room: Room) => {
   // ゲーム開始前の部屋データを受け取って、山札を作り、プレイヤーにカードを配るロジック
+  console.log("=== ゲーム開始前のプレイヤー情報 ===");
+  room.players.forEach((p) =>
+    console.log(`${p.name}: spectating=${p.isSpectating}`),
+  );
   const initialDeck = createShuffledDeck();
   // プレイヤー全員にカードを配り、残りの山札も受け取る
   const { updatedPlayers, remainingDeck } = distributeCards(
@@ -68,16 +72,70 @@ export const changeOnlyTheme = async (room: Room, nextTheme: Theme) => {
 
 // 次のゲーム（ラウンド）へ進む（ホストが操作）
 export const advanceToNextRound = async (room: Room, nextTheme: Theme) => {
+  // 1. シャッフル済みの山札を作成
   const freshDeck = createShuffledDeck();
+
+  // 2. 観戦者を解除し、カードを配るためにプレイヤーリストを整理
+  // 観戦者も参加者として扱い、全員にカードを配る前提のリストを作る
+  const playersForNextRound = room.players.map((p) => ({
+    ...p,
+    isSpectating: false, // 全員参加状態にする
+    answerText: "",
+    isCardOpen: false,
+    card: null, // 一旦リセット
+  }));
+
+  // 3. resetAllPlayersForNextRound を使ってカードを配る
+  // ※この関数内で山札からカードを player.card に代入しているはずです
   const { updatedPlayers, remainingDeck } = resetAllPlayersForNextRound(
-    room.players,
+    playersForNextRound,
     freshDeck,
   );
 
+  const nextRound = (room.round_number || 1) + 1;
+
+  // 4. 更新
   await safeUpdateRoom(room.room_code, {
-    ...room, // 既存のステータスを壊さないように全乗せ
+    round_number: nextRound,
     current_theme: nextTheme,
-    players: updatedPlayers,
+    players: updatedPlayers, // ここには既に全員分のカードが入っているはず
     deck: remainingDeck,
   });
+};
+
+// ゲームを終了する（ホストが操作）
+export const endGame = async (roomCode: string) => {
+  // 部屋のデータを削除
+  const { error } = await supabase
+    .from("rooms")
+    .update({ status: "waiting" })
+    .eq("room_code", roomCode);
+
+  if (error) throw new Error(`ゲーム終了に失敗しました: ${error.message}`);
+};
+
+// hostのキック機能
+export const kickPlayer = async (roomCode: string, playerId: string) => {
+  // 1. 最新の部屋データを取得
+  const { data: latestRoom, error: fetchError } = await supabase
+    .from("rooms")
+    .select("players")
+    .eq("room_code", roomCode)
+    .single();
+
+  if (fetchError || !latestRoom) {
+    throw new Error("部屋データの取得に失敗しました。");
+  }
+
+  // 2. プレイヤーリストからキック対象を除外
+  const currentPlayers = (latestRoom.players as unknown as Player[]) || [];
+  const updatedPlayers = currentPlayers.filter((p) => p.id !== playerId);
+
+  const { error } = await supabase
+    .from("rooms")
+    .update({ players: updatedPlayers })
+    .eq("room_code", roomCode);
+
+  if (error)
+    throw new Error(`プレイヤーのキックに失敗しました: ${error.message}`);
 };

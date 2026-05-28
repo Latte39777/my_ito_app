@@ -1,119 +1,107 @@
 "use client";
 
-import { RoomSchema, Player } from "@/types/schema";
+import { useEffect, useState } from "react";
+import { Room, Player } from "@/types/schema";
+import { ParticipantList } from "./ParticipantList";
+import { useRouter } from "next/navigation";
 
 interface WaitingRoomProps {
-  room: RoomSchema;
+  room: Room;
+  players: Player[];
+  myPlayerId: string;
   isHost: boolean;
   onStartGame: () => void;
+  onDisbandRoom: () => void; // 退出・解散共通のハンドラ
 }
 
-export default function WaitingRoom({
+export function WaitingRoom({
   room,
+  players,
+  myPlayerId,
   isHost,
   onStartGame,
+  onDisbandRoom,
 }: WaitingRoomProps) {
+  const [copied, setCopied] = useState(false);
+  const router = useRouter(); // 💡 useRouter を追加
+
+  // 💡 ホストが解散したことを検知してホームへ戻す
+  useEffect(() => {
+    // もしステータスが "waiting" に戻った(解散された)とき、
+    // かつ自分がホストではない場合のみホームへ戻る
+    if (room.status === "waiting" && !isHost) {
+      alert("ホストがルームを解散しました。");
+      router.push("/");
+    }
+  }, [room.status, isHost, router]);
+
+  const handleCopyUrl = async () => {
+    const url = typeof window !== "undefined" ? window.location.href : "";
+    if (!url) return;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("コピーに失敗しました", err);
+    }
+  };
+
   return (
-    <div>
-      <header style={{ textAlign: "center", marginBottom: "30px" }}>
-        <p style={{ fontSize: "14px", color: "#666", margin: 0 }}>
-          ルームコード
-        </p>
-        <h1
-          style={{
-            fontSize: "48px",
-            letterSpacing: "4px",
-            margin: "10px 0",
-            color: "#0070f3",
-          }}
-        >
-          {room.room_code}
-        </h1>
-        <p style={{ fontSize: "14px", color: "#999" }}>
-          友達にこの4桁のコードを教えてね！
-        </p>
-      </header>
+    <div className="flex-1 flex flex-col items-center p-5 w-full max-w-[400px] mx-auto pt-10">
+      <h1 className="font-kei text-4xl font-black text-black mb-6 tracking-[2px]">
+        ナンバートーク
+      </h1>
 
-      {/* お題のチラ見せ */}
-      <section
-        style={{
-          border: "1px solid #ccc",
-          padding: "15px",
-          borderRadius: "8px",
-          marginBottom: "25px",
-        }}
-      >
-        <h3 style={{ margin: "0 0 10px 0" }}>🎲 今回のお題テーマ</h3>
-        <p
-          style={{ fontSize: "18px", fontWeight: "bold", margin: "0 0 5px 0" }}
-        >
-          {room.current_theme?.title}
-        </p>
-        <p style={{ fontSize: "12px", color: "#666", margin: 0 }}>
-          （1：{room.current_theme?.low} 〜 100：{room.current_theme?.high}）
-        </p>
-      </section>
+      <h2 className="text-2xl font-bold text-black mb-6">
+        ルームID : {room.room_code}
+      </h2>
 
-      {/* 参加者一覧リスト */}
-      <section style={{ marginBottom: "30px" }}>
-        <h3 style={{ borderBottom: "2px solid #222", paddingBottom: "8px" }}>
-          参加中のプレイヤー ({room.players.length}人)
-        </h3>
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          {room.players.map((player: Player) => (
-            <li
-              key={player.id}
-              style={{
-                padding: "12px",
-                borderBottom: "1px solid #eee",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ fontSize: "16px", fontWeight: "bold" }}>
-                {player.name} {player.isHost && "👑 (ホスト)"}
-              </span>
-              <span
-                style={{
-                  fontSize: "12px",
-                  color: player.isSpectating ? "#999" : "#0070f3",
-                }}
-              >
-                {player.isSpectating ? "観戦中" : "参戦モード"}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {/* 参加者リスト */}
+      <div className="w-full mb-8">
+        <ParticipantList
+          players={players}
+          myPlayerId={myPlayerId}
+          isHost={isHost} // ホスト判定を渡す
+        />
+      </div>
 
-      {/* 操作ボタン */}
-      <footer style={{ marginTop: "40px" }}>
+      {/* アクションボタン */}
+      <div className="w-full flex flex-col gap-4 mb-8">
         {isHost ? (
-          <button
-            onClick={onStartGame}
-            style={{
-              width: "100%",
-              padding: "15px",
-              fontSize: "18px",
-              backgroundColor: "#ff4d4f",
-              color: "#fff",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
-          >
-            全員揃ったのでゲームを開始する 🚀
-          </button>
+          <>
+            <button
+              onClick={onStartGame}
+              className="ito-btn ito-btn-primary py-3 px-4 font-bold"
+            >
+              始める
+            </button>
+            <button onClick={onDisbandRoom} className="ito-btn ito-btn-outline">
+              解散する
+            </button>
+          </>
         ) : (
-          <div
-            style={{ textAlign: "center", color: "#666", fontStyle: "italic" }}
-          >
-            ホストがゲームを開始するのを待っています...⏳
-          </div>
+          <>
+            <div className="ito-btn bg-gray-300 text-gray-600 border-none cursor-not-allowed text-center">
+              ホストの開始を待っています...
+            </div>
+            <button onClick={onDisbandRoom} className="ito-btn ito-btn-outline">
+              退出する
+            </button>
+          </>
         )}
-      </footer>
+      </div>
+
+      {/* 招待URL */}
+      <div className="w-full flex flex-col items-center gap-3">
+        <div className="w-full bg-gray-200 border border-gray-300 rounded-md py-2 px-3 text-center text-sm font-bold text-black overflow-hidden text-ellipsis whitespace-nowrap">
+          {typeof window !== "undefined" ? window.location.href : "https://..."}
+        </div>
+
+        <button onClick={handleCopyUrl} className="ito-btn ito-btn-dark w-full">
+          {copied ? "コピーしました！" : "URLをコピー"}
+        </button>
+      </div>
     </div>
   );
 }

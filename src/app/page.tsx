@@ -15,7 +15,7 @@ export default function TopPage() {
     <AnimatedBackground>
       <div className="flex-1 flex flex-col items-center justify-center p-5 w-full max-w-[400px] mx-auto">
         <h1 className="font-kei text-4xl md:text-5xl font-black text-black mb-10 tracking-[2px]">
-          オンラインIto
+          ナンバートーク
         </h1>
 
         <div className="w-full flex flex-col gap-6">
@@ -23,14 +23,15 @@ export default function TopPage() {
             <label className="text-lg font-bold text-black">あなたの名前</label>
 
             {/* 💡 ここを修正：名前入力欄を先にして、アイコン選択を右に配置！ */}
-            <div className="flex items-end gap-2">
+            <div className="ito-box flex items-end gap-2 p-2">
               {/* 名前入力欄 */}
               <input
                 type="text"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 placeholder="例：らて"
-                className="w-full bg-transparent border-none border-b-[3px] border-black text-xl font-bold py-2 px-1 text-black focus:outline-none placeholder-black/40"
+                maxLength={12}
+                className="ito-input py-2 px-3 text-xl"
               />
 
               {/* アイコン選択ボタン（名前の右横） */}
