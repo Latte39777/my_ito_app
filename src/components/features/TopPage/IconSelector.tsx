@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { AVAILABLE_ICONS } from "@/components/iconList";
+import { AVAILABLE_ICONS } from "@/data/icon";
 
 interface IconSelectorProps {
   selectedIcon: string;

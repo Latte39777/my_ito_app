@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { HostSection } from "@/components/HostSection";
-import { GuestSection } from "@/components/GuestSection";
+import { HostSection } from "@/components/features/TopPage/HostCreateRoom";
+import { GuestSection } from "@/components/features/TopPage/GuestJoinForm";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
-import { AVAILABLE_ICONS } from "@/components/iconList";
-import { IconSelector } from "@/components/IconSelector";
+import { AVAILABLE_ICONS } from "@/data/icon";
+import { IconSelector } from "@/components/features/TopPage/IconSelector";
 
 export default function TopPage() {
   const [userName, setUserName] = useState("");

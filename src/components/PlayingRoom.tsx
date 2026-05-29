@@ -8,7 +8,7 @@ import { ParticipantList } from "@/components/ParticipantList";
 import { AnswerInputBox } from "@/components/playing/AnswerInputBox";
 import {
   advanceToNextRound,
-  changeOnlyTheme,
+  updateTheme,
   endGame,
   kickPlayer,
   updateRoomLife,
@@ -46,7 +46,7 @@ export function PlayingRoom({
 
   const handleChangeTheme = async (newTheme: Theme) => {
     try {
-      await changeOnlyTheme(room, newTheme);
+      await updateTheme(room.room_code, newTheme);
     } catch (error) {
       console.error(error);
       alert("お題の変更に失敗しました");
@@ -135,7 +135,7 @@ export function PlayingRoom({
 
       // 3. サーバー側の関数に「新しいお題」を渡して実行
       // ※ advanceToNextRound(room, theme) の引数構成に合わせる
-      await advanceToNextRound(room, nextTheme);
+      await advanceToNextRound(room.room_code, nextTheme);
     } catch (error) {
       console.error(error);
       alert("次のラウンドへの移行に失敗しました");

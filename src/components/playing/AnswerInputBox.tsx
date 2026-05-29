@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Player } from "@/types/schema";
 // 💡 待合室で使っているアイコンリストをインポート（パスは合わせてね）
-import { AVAILABLE_ICONS } from "@/components/iconList";
+import { AVAILABLE_ICONS } from "@/data/icon";
 
 interface AnswerInputBoxProps {
   player: Player;

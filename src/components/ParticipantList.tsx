@@ -1,6 +1,6 @@
 "use client";
 
-import { AVAILABLE_ICONS } from "./iconList";
+import { AVAILABLE_ICONS } from "../data/icon";
 import { Player } from "@/types/schema";
 
 interface ParticipantListProps {
