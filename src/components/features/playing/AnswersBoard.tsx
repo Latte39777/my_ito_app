@@ -3,16 +3,16 @@
 import { Player } from "@/types/schema";
 import { AnswerCard } from "./AnswerCard";
 
-interface AnswerBaordProps {
+interface AnswersBoardProps {
   players: Player[];
   myPlayerId: string;
   onEditAnswer: (currentText: string) => void;
 }
-export function AnswerBaord({
+export function AnswersBoard({
   players,
   myPlayerId,
   onEditAnswer,
-}: AnswerBaordProps) {
+}: AnswersBoardProps) {
   const playingPlayers = players.filter((p) => !p.isSpectating);
 
   return (

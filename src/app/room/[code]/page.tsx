@@ -1,141 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams, useSearchParams, useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
-import { Room, Player } from "@/types/schema";
-import { WaitingRoom } from "@/components/WaitingRoom";
+import { useParams, useRouter } from "next/navigation";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
-import { PlayingRoom } from "@/components/PlayingRoom";
+import { WaitingRoom } from "@/components/features/waiting/WaitingRoom";
+import { PlayingRoom } from "@/components/features/playing/PlayingRoom";
 import { endGame, startGame } from "@/services/gameService";
 import { leaveRoom } from "@/services/playerService";
+import { useRoom } from "@/app/hooks/useRoom";
 
 export default function RoomPage() {
   const params = useParams();
-  const searchParams = useSearchParams();
   const router = useRouter();
   const roomCode = params.code as string;
 
-  const [room, setRoom] = useState<Room | null>(null);
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [myPlayerId, setMyPlayerId] = useState<string>("");
-  const [loading, setLoading] = useState(true);
-
-  // 1. 初期データの取得と参加処理
-  useEffect(() => {
-    if (!roomCode) return;
-
-    const initRoom = async () => {
-      try {
-        const { data: roomData, error: roomError } = await supabase
-          .from("rooms")
-          .select("*")
-          .eq("room_code", roomCode)
-          .single();
-
-        if (roomError || !roomData) {
-          throw new Error("部屋が見つかりません");
-        }
-
-        setRoom(roomData);
-        const currentPlayers: Player[] = roomData.players || [];
-        setPlayers(currentPlayers);
-
-        const joinName = searchParams.get("name");
-        const joinIcon = searchParams.get("icon");
-        const joinHostId = searchParams.get("hostId");
-        const savedPlayerId = localStorage.getItem(`ito_player_${roomCode}`);
-
-        if (savedPlayerId) {
-          setMyPlayerId(savedPlayerId);
-        } else if (joinHostId) {
-          setMyPlayerId(joinHostId);
-          localStorage.setItem(`ito_player_${roomCode}`, joinHostId);
-          router.replace(`/room/${roomCode}`);
-        } else if (joinName && joinIcon) {
-          const newPlayerId = crypto.randomUUID();
-
-          // 💡 途中参加判定：ゲーム中なら観戦者にする
-          const isPlaying = roomData.status === "playing";
-
-          const newPlayer: Player = {
-            id: newPlayerId,
-            name: joinName,
-            icon: joinIcon,
-            isHost: false,
-            card: null,
-            answerText: "",
-            isCardOpen: false,
-            isOnline: true,
-            isSpectating: isPlaying, // ここで判定
-          };
-
-          const updatedPlayers = [...currentPlayers, newPlayer];
-          await supabase
-            .from("rooms")
-            .update({ players: updatedPlayers })
-            .eq("room_code", roomCode);
-
-          setMyPlayerId(newPlayerId);
-          localStorage.setItem(`ito_player_${roomCode}`, newPlayerId);
-          router.replace(`/room/${roomCode}`);
-        } else {
-          router.push("/");
-        }
-      } catch (error) {
-        console.error(error);
-        alert("エラーが発生しました。");
-        router.push("/");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    initRoom();
-  }, [roomCode, searchParams, router]);
-
-  // 2. Supabase リアルタイム購読
-  // RoomPage.tsx の 2. Supabase リアルタイム購読 useEffect 内
-
-  useEffect(() => {
-    if (!roomCode) return;
-
-    const channel = supabase
-      .channel(`room_${roomCode}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "rooms",
-          filter: `room_code=eq.${roomCode}`,
-        },
-        (payload) => {
-          const updatedRoom = payload.new as Room;
-
-          // 💡 ここに追加！
-          // ホストがゲームを終了（waitingに戻した）時に、参加者全員をホームへ戻す
-          if (updatedRoom.status === "waiting" && room?.status === "playing") {
-            alert("ホストがゲームを終了しました。");
-            localStorage.removeItem(`ito_player_${roomCode}`); // ストレージも掃除
-            router.push("/");
-          }
-
-          setRoom(updatedRoom);
-          setPlayers(updatedRoom.players || []);
-        },
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [roomCode, room?.status, router]); // 💡 [roomCode] に [room?.status, router] を追加しておくと安全です
+  const { room, players, myPlayerId, loading } = useRoom(roomCode);
 
   const handleStartGame = async () => {
     if (!room) return;
     try {
-      await startGame(room);
+      await startGame(room.room_code);
     } catch (error) {
       console.error(error);
       alert("ゲームの開始に失敗しました。");
@@ -200,6 +83,18 @@ export default function RoomPage() {
           myPlayer={myPlayer}
           isHost={isHost}
         />
+      )}
+
+      {room.status === "playing" && !myPlayer && (
+        <div className="flex-1 flex flex-col items-center justify-center font-bold text-black gap-4 h-full">
+          <p>プレイヤー情報が見つかりません。</p>
+          <button
+            onClick={() => router.push("/")}
+            className="ito-btn ito-btn-outline"
+          >
+            トップへ戻る
+          </button>
+        </div>
       )}
     </AnimatedBackground>
   );

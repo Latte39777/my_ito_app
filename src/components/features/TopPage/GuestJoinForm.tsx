@@ -4,12 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
-interface GuestSectionProps {
+interface GuestJoinFormProps {
   userName: string;
   iconId: string;
 }
 
-export function GuestSection({ userName, iconId }: GuestSectionProps) {
+export function GuestJoinForm({ userName, iconId }: GuestJoinFormProps) {
   const [roomCode, setRoomCode] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();

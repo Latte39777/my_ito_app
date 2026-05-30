@@ -29,6 +29,7 @@ export const openMyCard = async (roomCode: string, myId: string) => {
 // ルームを退出する
 export const leaveRoom = async (roomCode: string, playerId: string) => {
   await updateRoomAtomic(roomCode, (room) => {
+    // filter を使って、自分（playerId）以外のプレイヤーだけを残す
     const players = room.players.filter((p) => p.id !== playerId);
     return { players };
   });
@@ -59,5 +60,20 @@ export const joinRoom = async (
     };
 
     return { players: [...room.players, newPlayer] };
+  });
+};
+
+// 名前を変更する
+export const changePlayerName = async (
+  roomCode: string,
+  playerId: string,
+  newName: string,
+) => {
+  await updateRoomAtomic(roomCode, (room) => {
+    // filter を使って、自分（playerId）以外のプレイヤーだけを残す
+    const players = room.players.map((p) =>
+      p.id === playerId ? { ...p, name: newName } : p,
+    );
+    return { players };
   });
 };

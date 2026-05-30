@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { HostSection } from "@/components/features/TopPage/HostCreateRoom";
-import { GuestSection } from "@/components/features/TopPage/GuestJoinForm";
+import { HostCreateRoom } from "@/components/features/TopPage/HostCreateRoom";
+import { GuestJoinForm } from "@/components/features/TopPage/GuestJoinForm";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
-import { AVAILABLE_ICONS } from "@/data/icon";
-import { IconSelector } from "@/components/features/TopPage/IconSelector";
+import { UserSetupForm } from "@/components/features/TopPage/UserSetupForm";
+import { useUserSetup } from "@/app/hooks/useUserSetup";
 
 export default function TopPage() {
-  const [userName, setUserName] = useState("");
-  const [selectedIconId, setSelectedIconId] = useState(AVAILABLE_ICONS[0].id);
+  const { userName, setUserName, selectedIconId, setSelectedIconId } =
+    useUserSetup();
 
   return (
     <AnimatedBackground>
@@ -22,30 +21,17 @@ export default function TopPage() {
           <div className="flex flex-col gap-2">
             <label className="text-lg font-bold text-black">あなたの名前</label>
 
-            {/* 💡 ここを修正：名前入力欄を先にして、アイコン選択を右に配置！ */}
-            <div className="ito-box flex items-end gap-2 p-2">
-              {/* 名前入力欄 */}
-              <input
-                type="text"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                placeholder="例：らて"
-                maxLength={12}
-                className="ito-input py-2 px-3 text-xl"
-              />
-
-              {/* アイコン選択ボタン（名前の右横） */}
-              <div className="shrink-0 mb-1">
-                <IconSelector
-                  selectedIcon={selectedIconId}
-                  onSelectIcon={setSelectedIconId}
-                />
-              </div>
-            </div>
+            <UserSetupForm
+              userName={userName}
+              setUserName={setUserName}
+              iconId={selectedIconId}
+              setIconId={setSelectedIconId}
+            />
           </div>
 
-          <HostSection userName={userName} iconId={selectedIconId} />
-          <GuestSection userName={userName} iconId={selectedIconId} />
+          {/* ホスト（部屋作成）とゲスト（部屋参加）のセクション */}
+          <HostCreateRoom userName={userName} iconId={selectedIconId} />
+          <GuestJoinForm userName={userName} iconId={selectedIconId} />
         </div>
       </div>
     </AnimatedBackground>

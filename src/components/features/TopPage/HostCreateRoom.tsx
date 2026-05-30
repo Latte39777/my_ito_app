@@ -4,12 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createRoom } from "@/services/roomService";
 
-interface HostSectionProps {
+interface HostCreateRoomProps {
   userName: string;
   iconId: string;
 }
 
-export function HostSection({ userName, iconId }: HostSectionProps) {
+export function HostCreateRoom({ userName, iconId }: HostCreateRoomProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 

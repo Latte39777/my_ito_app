@@ -4,6 +4,7 @@ import {
   createShuffledDeck,
   resetAllPlayersForNextRound,
 } from "@/lib/gameLogic";
+import { supabase } from "@/lib/supabase";
 
 // Hostによるゲーム進行管理の関数群
 // 次のラウンドへ進む
@@ -13,16 +14,6 @@ export const advanceToNextRound = async (
 ) => {
   await updateRoomAtomic(roomCode, (room) => {
     const freshDeck = createShuffledDeck();
-
-    // // 観戦者を解除して全員参加状態にする
-    // const playersForNextRound = room.players.map((p) => ({
-    //   ...p,
-    //   isSpectating: false,
-    //   answerText: "",
-    //   isCardOpen: false,
-    //   card: null,
-    // }));
-
     // 全プレイヤーの状態をリセットして新しいデッキを配る
     // 観戦者を解除して全員参加状態にするはresetAllPlayersForNextRoundの中で行う
     const { updatedPlayers, remainingDeck } = resetAllPlayersForNextRound(
@@ -39,14 +30,36 @@ export const advanceToNextRound = async (
   });
 };
 
+// ゲームを開始する
+export const startGame = async (roomCode: string) => {
+  await updateRoomAtomic(roomCode, (room) => {
+    const freshDeck = createShuffledDeck();
+    const { updatedPlayers, remainingDeck } = resetAllPlayersForNextRound(
+      room.players,
+      freshDeck,
+    );
+
+    return {
+      status: "playing",
+      round_number: 1,
+      players: updatedPlayers,
+      deck: remainingDeck,
+    };
+  });
+};
+
 // ゲームを終了する
 export const endGame = async (roomCode: string) => {
-  // 部屋の状態を「waiting」に戻すだけでOK。
-  // PlayingRoom側でstatusが変わったのを検知して画面遷移する
-  // 部屋から，プレイヤーからゲーム関連のデータを消す必要はない（過去のラウンドの記録として残しておく）
-  await updateRoomAtomic(roomCode, () => {
-    return { status: "waiting" };
-  });
+  const { error } = await supabase
+    .from("rooms")
+    .delete()
+    .eq("room_code", roomCode);
+
+  if (error) {
+    throw new Error(
+      `ゲームの終了（部屋の削除）に失敗しました: ${error.message}`,
+    );
+  }
 };
 
 // プレイヤーをキックする
