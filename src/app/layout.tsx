@@ -15,7 +15,12 @@ const geistMono = Geist_Mono({
 
 const keifont = localFont({
   src: "./public/fonts/keifont.ttf",
-  variable: "--font-kei", // CSS変数名を指定
+  variable: "--font-kei",
+});
+
+const hanazomefont = localFont({
+  src: "./public/fonts/hanazomefont.ttf",
+  variable: "--font-hanazome",
 });
 
 export const metadata: Metadata = {
@@ -31,7 +36,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${keifont.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${keifont.variable} ${hanazomefont.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

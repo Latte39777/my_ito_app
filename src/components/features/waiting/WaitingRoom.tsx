@@ -2,7 +2,8 @@
 
 import { Room, Player } from "@/types/schema";
 import { ParticipantList } from "@/components/shared/ParticipantList";
-import { RoomInfoAndShare } from "./RoomInfoAndShare"; // 💡 パスは環境に合わせてください
+import { RoomInfoAndShare } from "./RoomInfoAndShare";
+import { ConfirmButton } from "@/components/shared/ConfirmButton";
 
 interface WaitingRoomProps {
   room: Room;
@@ -11,7 +12,7 @@ interface WaitingRoomProps {
   isHost: boolean;
   onStartGame: () => void;
   onDisbandRoom: () => void;
-  isProcessing?: boolean; // 💡 追加
+  isProcessing?: boolean;
 }
 
 export function WaitingRoom({
@@ -21,19 +22,19 @@ export function WaitingRoom({
   isHost,
   onStartGame,
   onDisbandRoom,
-  isProcessing = false, // 💡 追加
+  isProcessing = false,
 }: WaitingRoomProps) {
   return (
-    <div className="flex-1 flex flex-col items-center p-5 w-full max-w-[400px] mx-auto pt-10">
-      <h1 className="font-kei text-4xl font-black text-black mb-6 tracking-[2px]">
+    <div className="mx-auto flex w-full max-w-[400px] flex-1 flex-col items-center p-5 pt-10">
+      <h1 className="font-kei mb-6 text-4xl font-black tracking-[2px] text-black">
         ナンバートーク
       </h1>
 
-      <div className="w-full mb-8 flex flex-col items-center">
+      <div className="mb-8 flex w-full flex-col items-center">
         <RoomInfoAndShare roomCode={room.room_code} />
       </div>
 
-      <div className="w-full mb-8">
+      <div className="mb-8 w-full">
         <ParticipantList
           players={players}
           myPlayerId={myPlayerId}
@@ -41,36 +42,42 @@ export function WaitingRoom({
         />
       </div>
 
-      <div className="w-full flex flex-col gap-4 mb-8">
+      <div className="mb-8 flex w-full flex-col gap-4">
         {isHost ? (
           <>
-            <button
-              onClick={onStartGame}
+            {/* 💡 始めるボタン */}
+            <ConfirmButton
+              onConfirm={onStartGame}
+              defaultText={isProcessing ? "処理中..." : "始める"}
+              confirmText="ゲームを始める？"
+              baseClassName="ito-btn ito-btn-primary py-3 px-4 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+              confirmClassName="!bg-blue-700" // ポジティブなので濃い青
               disabled={isProcessing}
-              className="ito-btn ito-btn-primary py-3 px-4 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isProcessing ? "処理中..." : "始める"}
-            </button>
-            <button
-              onClick={onDisbandRoom}
+            />
+            {/* 💡 解散するボタン */}
+            <ConfirmButton
+              onConfirm={onDisbandRoom}
+              defaultText={isProcessing ? "処理中..." : "解散する"}
+              confirmText="本当に解散する？"
+              baseClassName="ito-btn ito-btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
+              confirmClassName="!bg-red-500 !text-white !border-black" // 黒枠＋赤背景
               disabled={isProcessing}
-              className="ito-btn ito-btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isProcessing ? "処理中..." : "解散する"}
-            </button>
+            />
           </>
         ) : (
           <>
-            <div className="ito-btn bg-gray-300 text-gray-600 border-none cursor-not-allowed text-center">
+            <div className="ito-btn cursor-not-allowed border-none bg-gray-300 text-center text-gray-600">
               ホストの開始を待っています...
             </div>
-            <button
-              onClick={onDisbandRoom}
+            {/* 💡 退出するボタン */}
+            <ConfirmButton
+              onConfirm={onDisbandRoom}
+              defaultText={isProcessing ? "処理中..." : "退出する"}
+              confirmText="本当に退出する？"
+              baseClassName="ito-btn ito-btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
+              confirmClassName="!bg-red-500 !text-white !border-black" // 黒枠＋赤背景
               disabled={isProcessing}
-              className="ito-btn ito-btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isProcessing ? "処理中..." : "退出する"}
-            </button>
+            />
           </>
         )}
       </div>

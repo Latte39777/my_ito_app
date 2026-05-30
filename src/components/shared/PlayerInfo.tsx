@@ -2,11 +2,13 @@
 
 import { AVAILABLE_ICONS } from "@/data/icon";
 import { Player } from "@/types/schema";
+import { TbCrown, TbUserFilled } from "react-icons/tb";
+import { PiEyesFill } from "react-icons/pi";
 
 interface PlayerInfoProps {
   player: Player;
   isMe?: boolean;
-  size?: "sm" | "md"; // 💡 小さいサイズ(参加者リスト)と大きいサイズ(回答欄)を分ける
+  size?: "sm" | "md";
 }
 
 export function PlayerInfo({
@@ -18,40 +20,46 @@ export function PlayerInfo({
     AVAILABLE_ICONS.find((i) => i.id === player.icon) || AVAILABLE_ICONS[0];
   const IconComponent = iconData.Icon;
 
-  // サイズに応じたスタイルの切り替え
   const isSmall = size === "sm";
   const iconSize = isSmall ? 20 : 30;
-  const textSize = isSmall ? "text-lg" : "text-2xl";
-  const tagSize = isSmall ? "text-xs" : "text-lg";
+  const textSize = isSmall ? "text-lg" : "text-xl";
+  const tagSize = isSmall ? "text-xs" : "text-md";
 
   return (
-    <div className="flex items-center gap-1 flex-grow truncate">
+    <div className="flex w-full flex-grow items-center gap-1">
       <div
-        className={`flex items-center justify-center shrink-0 ${isSmall ? "w-[20px] h-[20px]" : "w-[30px] h-[30px]"}`}
+        className={`flex shrink-0 items-center justify-center ${isSmall ? "h-[20px] w-[20px]" : "h-[30px] w-[30px]"}`}
       >
         <IconComponent size={iconSize} className={iconData.color} />
       </div>
 
       <span
-        className={`font-bold text-black truncate max-w-[120px] ${textSize}`}
+        className={`font-hana min-w-0 flex-1 truncate font-bold text-black ${textSize}`}
       >
         {player.name}
       </span>
 
-      <div className="flex items-center shrink-0">
+      <div className="ml-auto flex shrink-0 items-center gap-2">
         {player.isHost && (
-          <span className={`text-yellow-600 font-bold ml-1 ${tagSize}`}>
-            👑ホスト
+          // 💡 アイコンと文字を綺麗に並べるために flex items-center を追加
+          <span
+            className={`font-hana flex items-center font-bold text-yellow-600 ${tagSize}`}
+          >
+            <TbCrown className="mr-0.5" /> ホスト
           </span>
         )}
         {isMe && (
-          <span className={`text-blue-600 font-bold ml-1 ${tagSize}`}>
-            👤あなた
+          <span
+            className={`font-hana flex items-center font-bold text-blue-600 ${tagSize}`}
+          >
+            <TbUserFilled className="mr-0.5" /> あなた
           </span>
         )}
         {player.isSpectating && (
-          <span className={`text-gray-500 font-bold ml-1 ${tagSize}`}>
-            👀観戦中
+          <span
+            className={`font-hana flex items-center font-bold text-gray-500 ${tagSize}`}
+          >
+            <PiEyesFill className="mr-0.5" /> 観戦中
           </span>
         )}
       </div>

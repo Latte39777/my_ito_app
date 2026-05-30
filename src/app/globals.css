@@ -3,6 +3,7 @@
 @theme {
   --font-sans: "Helvetica Neue", Arial, sans-serif;
   --font-kei: "Keifont", sans-serif;
+  --font-hana: "Hanazome", sans-serif;
 
   --animate-gradient: hue-loop 10s linear infinite;
 
@@ -60,30 +61,29 @@
 
 @layer components {
   .ito-box {
-    @apply bg-white border-2 border-black rounded-xl shadow-[3px_4px_0_0_rgba(0,0,0,1)];
+    @apply rounded-xl border-2 border-gray-200 bg-white shadow-[4px_5px_0_0_rgba(0,0,0,1)] outline-2 outline-black;
   }
   .ito-btn {
-    @apply w-full text-lg font-bold rounded-xl flex items-center justify-center gap-2 cursor-pointer;
+    @apply flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl text-lg font-bold;
     @apply transition-transform duration-100 active:scale-95;
-    @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
+    @apply disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100;
   }
   .ito-btn-primary {
-    @apply bg-[#5C7CFF] text-white border-none shadow-md;
+    @apply border-none bg-[#5C7CFF] text-white shadow-md;
   }
   .ito-btn-outline {
-    @apply bg-transparent text-black border-2 border-black shadow-none;
+    @apply border-2 border-black bg-transparent text-black shadow-none;
   }
   .ito-btn-dark {
-    @apply bg-black text-white border-none text-lg rounded-lg w-full;
+    @apply w-full rounded-lg border-none bg-black text-lg text-white;
   }
   .ito-input {
-    @apply w-full border-none border-b border-gray-300 text-black focus:outline-none placeholder-gray-300;
+    @apply w-full border-b border-none border-gray-300 text-black placeholder-gray-300 focus:outline-none;
   }
   .ito-speech-tail {
-    @apply absolute -bottom-[10px] left-8 w-5 h-5 bg-white border-b-2 border-r-2 border-black rotate-45;
-    /* しっぽにも影をつけることで、本体の影と自然に馴染ませる */
-    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+    @apply absolute -bottom-[10px] left-8 h-5 w-5 rotate-45 border-black bg-white shadow-[4px_5px_0_0_rgba(0,0,0,1)];
   }
+  /* shadow-[1px_2px_3px_4px] 1 */
 }
 
 @layer utilities {

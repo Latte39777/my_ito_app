@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { changePlayerName } from "@/services/playerService";
+import { TbSettingsFilled } from "react-icons/tb";
 
 interface SettingsButtonProps {
   roomCode: string;
@@ -38,20 +39,19 @@ export function SettingsButton({
 
   return (
     <>
-      {/* 画面右上に固定される歯車ボタン */}
       <button
         onClick={() => setIsOpen(true)}
-        className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 bg-white border-2 border-gray-200 rounded-full flex items-center justify-center text-xl hover:bg-gray-100 transition-colors z-50 shadow-sm"
+        className="ito-box absolute top-4 right-4 z-50 flex h-10 w-10 items-center justify-center text-xl transition-transform hover:scale-110 active:scale-95"
         aria-label="設定"
       >
-        ⚙️
+        <TbSettingsFilled size={22} className="text-gray-700" />
       </button>
 
       {/* モーダル背景と中身 */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] px-4">
-          <div className="bg-white p-6 rounded-2xl w-full max-w-sm flex flex-col gap-5 shadow-2xl animate-fade-in">
-            <h2 className="text-2xl font-black text-black border-b-2 border-gray-100 pb-2">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4">
+          <div className="animate-fade-in flex w-full max-w-sm flex-col gap-5 rounded-2xl bg-white p-6 shadow-2xl">
+            <h2 className="border-b-2 border-gray-100 pb-2 text-2xl font-black text-black">
               設定
             </h2>
 
@@ -64,23 +64,23 @@ export function SettingsButton({
                 maxLength={12}
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
-                className="w-full text-xl font-bold text-black border-2 border-gray-200 rounded-lg p-3 focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full rounded-lg border-2 border-gray-200 p-3 text-xl font-bold text-black transition-colors focus:border-blue-500 focus:outline-none"
                 placeholder="新しい名前"
               />
             </div>
 
-            <div className="flex justify-end gap-3 mt-2">
+            <div className="mt-2 flex justify-end gap-3">
               <button
                 onClick={() => setIsOpen(false)}
                 disabled={isSaving}
-                className="px-5 py-2 font-bold text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
+                className="rounded-lg px-5 py-2 font-bold text-gray-500 transition-colors hover:bg-gray-100"
               >
                 キャンセル
               </button>
               <button
                 onClick={handleSave}
                 disabled={isSaving || !editName.trim()}
-                className="px-5 py-2 font-bold text-white bg-blue-500 hover:bg-blue-600 rounded-lg disabled:opacity-50 transition-colors"
+                className="rounded-lg bg-blue-500 px-5 py-2 font-bold text-white transition-colors hover:bg-blue-600 disabled:opacity-50"
               >
                 {isSaving ? "保存中..." : "保存する"}
               </button>

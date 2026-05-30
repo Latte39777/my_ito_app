@@ -34,26 +34,26 @@ export function PlayingRoom({
   const actions = usePlayingRoomActions(room, myPlayer, isHost);
 
   return (
-    <div className="flex flex-col w-full max-w-[1500px] mx-auto p-4 md:p-8 gap-1 h-full">
-      <div className="flex flex-wrap md:flex-nowrap justify-between items-center font-bold text-black mb-4 gap-y-3 relative">
-        <h2 className="text-3xl md:text-4xl tracking-wider shrink-0">
+    <div className="mx-auto flex h-full w-full max-w-[1500px] flex-col gap-1 p-4 md:p-8">
+      <div className="font-hana relative mb-4 flex flex-wrap items-center justify-between gap-y-3 font-bold text-black md:flex-nowrap">
+        <h2 className="shrink-0 text-3xl tracking-wider md:text-4xl">
           第{roundNumber}回
         </h2>
         {myPlayer.isSpectating && (
-          <div className="w-full md:w-auto flex justify-center order-last md:order-none">
-            <div className="animate-pulse bg-gray-200 text-gray-600 font-bold px-4 md:px-6 py-2 md:py-3 rounded-full shadow-sm text-xs md:text-sm whitespace-nowrap">
+          <div className="order-last flex w-full justify-center md:order-none md:w-auto">
+            <div className="animate-pulse rounded-full bg-gray-200 px-4 py-2 text-xs font-bold whitespace-nowrap text-gray-600 shadow-sm md:px-6 md:py-3 md:text-sm">
               👀 観戦中：次のラウンドから参加します
             </div>
           </div>
         )}
-        <span className="text-lg md:text-xl shrink-0">
+        <span className="shrink-0 text-lg md:text-xl">
           ルームID : {room.room_code}
         </span>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col gap-6 md:flex-row">
         {/* 左カラム */}
-        <div className="flex-1 flex flex-col gap-10">
+        <div className="flex flex-1 flex-col gap-10">
           <ThemeBox
             theme={room.current_theme}
             isHost={isHost}
@@ -80,7 +80,7 @@ export function PlayingRoom({
         </div>
 
         {/* 右カラム */}
-        <div className="w-full md:w-[280px] flex flex-col gap-8 shrink-0">
+        <div className="flex w-full shrink-0 flex-col gap-8 md:w-[280px]">
           <LifeBox
             life={room.life}
             isHost={isHost}

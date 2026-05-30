@@ -1,6 +1,8 @@
 // src/components/features/playing/GameActionButtons.tsx
 "use client";
 
+import { ConfirmButton } from "@/components/shared/ConfirmButton";
+
 interface GameActionButtonsProps {
   isHost: boolean;
   isProcessing: boolean;
@@ -19,27 +21,31 @@ export function GameActionButtons({
   return (
     <div className="flex flex-col gap-3">
       {isHost && (
-        <button
-          // 💡 自分が処理中の時だけ薄くする。それ以外の処理中は見た目を変えない
-          className={`ito-btn ito-btn-primary w-full py-3 transition-all ${
+        <ConfirmButton
+          onConfirm={onNextRound}
+          defaultText={
+            loadingAction === "nextRound" ? "処理中..." : "つぎのお題"
+          }
+          confirmText="本当に次へ進む？"
+          baseClassName={`ito-btn ito-btn-primary w-full py-3 ${
             loadingAction === "nextRound" ? "opacity-50 cursor-not-allowed" : ""
           } ${isProcessing && loadingAction !== "nextRound" ? "cursor-not-allowed" : ""}`}
-          // 💡 HTMLのdisabledは使わず、処理中なら onClick を無効化（undefined）にする
-          onClick={isProcessing ? undefined : onNextRound}
-        >
-          {loadingAction === "nextRound" ? "処理中..." : "つぎのお題"}
-        </button>
+          // 💡 赤やオレンジを避け、元の青より少し濃い青にして変化を伝える
+          confirmClassName="!bg-blue-700"
+          disabled={isProcessing}
+        />
       )}
-      <button
-        // 💡 やめるボタンも同様に、処理中ならカーソルだけ変えて見た目はそのままにする
-        className={`ito-btn ito-btn-outline w-full mt-2 transition-all ${
+
+      <ConfirmButton
+        onConfirm={onLeaveRoom}
+        defaultText="やめる"
+        confirmText="本当にやめる？"
+        baseClassName={`ito-btn ito-btn-outline w-full mt-2 ${
           isProcessing ? "cursor-not-allowed" : ""
         }`}
-        // 💡 処理中はクリックしても何も起きないようにガードする
-        onClick={isProcessing ? undefined : onLeaveRoom}
-      >
-        やめる
-      </button>
+        confirmClassName="!bg-red-500 !text-white !border-black"
+        disabled={isProcessing}
+      />
     </div>
   );
 }

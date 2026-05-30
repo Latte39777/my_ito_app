@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Room, Player } from "@/types/schema";
-import { endGame, startGame } from "@/services/gameService"; // 💡 startGameを追加
+import { endGame, startGame } from "@/services/gameService";
 import { leaveRoom } from "@/services/playerService";
 
 export function useRoom(roomCode: string) {
@@ -14,8 +14,6 @@ export function useRoom(roomCode: string) {
   const [players, setPlayers] = useState<Player[]>([]);
   const [myPlayerId, setMyPlayerId] = useState<string>("");
   const [loading, setLoading] = useState(true);
-
-  // 💡 追加：アクション（開始・退出）の処理中状態
   const [isActionLoading, setIsActionLoading] = useState(false);
 
   // 初期データの取得と参加処理
@@ -133,7 +131,6 @@ export function useRoom(roomCode: string) {
     };
   }, [roomCode, router]);
 
-  // 💡 ゲーム開始ロジック
   const handleStartGame = async () => {
     if (!room || isActionLoading) return;
     setIsActionLoading(true);
@@ -147,16 +144,9 @@ export function useRoom(roomCode: string) {
     }
   };
 
-  // 💡 退出・解散ロジック
   const handleQuitRoom = async () => {
     if (!room || isActionLoading) return;
-
     const isHost = players.find((p) => p.id === myPlayerId)?.isHost;
-    const confirmMessage = isHost
-      ? "ルームを解散しますか？"
-      : "ルームから退出しますか？";
-
-    if (!confirm(confirmMessage)) return;
 
     setIsActionLoading(true);
     try {

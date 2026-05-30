@@ -1,3 +1,4 @@
+// src/hooks/usePlayingRoomActions.ts
 import { useState } from "react";
 import { Theme, Room, Player } from "@/types/schema";
 import { THEMES_LIST } from "@/data/themes";
@@ -19,7 +20,7 @@ export function usePlayingRoomActions(
 
   const handleChangeTheme = async (newTheme: Theme) => {
     if (isProcessing) return;
-    setLoadingAction("theme"); // "theme"の処理中
+    setLoadingAction("theme");
     try {
       await updateTheme(room.room_code, newTheme);
     } catch (error) {
@@ -32,7 +33,7 @@ export function usePlayingRoomActions(
 
   const handleChangeLife = async (newLife: number) => {
     if (isProcessing) return;
-    setLoadingAction("life"); // "life"の処理中
+    setLoadingAction("life");
     try {
       await updateRoomLife(room.room_code, newLife);
     } catch (error) {
@@ -45,7 +46,7 @@ export function usePlayingRoomActions(
 
   const handleSubmitAnswer = async (answer: string) => {
     if (isProcessing) return;
-    setLoadingAction("submitAnswer"); // "submitAnswer"の処理中
+    setLoadingAction("submitAnswer");
     try {
       await submitMyAnswer(room.room_code, myPlayer.id, answer);
     } catch (error) {
@@ -56,13 +57,12 @@ export function usePlayingRoomActions(
     }
   };
 
-  const handleEditAnswer = async (currentText: string) => {
-    const newAnswer = prompt("回答を編集してください", currentText);
-    if (!newAnswer || newAnswer.trim() === "" || newAnswer === currentText)
-      return;
+  // 💡 UI側(モーダル)から新しい回答テキストを直接受け取るように修正（promptを削除）
+  const handleEditAnswer = async (newAnswer: string) => {
+    if (!newAnswer || newAnswer.trim() === "") return;
 
     if (isProcessing) return;
-    setLoadingAction("editAnswer"); // "editAnswer"の処理中
+    setLoadingAction("editAnswer");
     try {
       await submitMyAnswer(room.room_code, myPlayer.id, newAnswer.trim());
     } catch (error) {
@@ -75,7 +75,7 @@ export function usePlayingRoomActions(
 
   const handleOpenMyCard = async () => {
     if (isProcessing) return;
-    setLoadingAction("openCard"); // "openCard"の処理中
+    setLoadingAction("openCard");
     try {
       await openMyCard(room.room_code, myPlayer.id);
     } catch (error) {
@@ -87,13 +87,9 @@ export function usePlayingRoomActions(
   };
 
   const handleNextRound = async () => {
-    if (
-      !confirm("次のラウンドに進みますか？全員の数字と回答がリセットされます。")
-    )
-      return;
-
+    // 💡 confirmを削除！ボタン側で確認済みなので即実行します
     if (isProcessing) return;
-    setLoadingAction("nextRound"); // 💡 "nextRound"の処理中！
+    setLoadingAction("nextRound");
     try {
       const nextTheme =
         THEMES_LIST[Math.floor(Math.random() * THEMES_LIST.length)];
@@ -108,7 +104,7 @@ export function usePlayingRoomActions(
 
   const handleKickPlayer = async (targetId: string) => {
     if (isProcessing) return;
-    setLoadingAction("kick"); // "kick"の処理中
+    setLoadingAction("kick");
     try {
       await kickPlayer(room.room_code, targetId);
     } catch (error) {
@@ -120,8 +116,8 @@ export function usePlayingRoomActions(
   };
 
   return {
-    isProcessing, // 💡 ThemeBoxなどはそのままこれを使う
-    loadingAction, // 💡 新しく「どの処理か」を返す
+    isProcessing,
+    loadingAction,
     handleChangeTheme,
     handleChangeLife,
     handleSubmitAnswer,
