@@ -7,6 +7,7 @@ import { MyCardBox } from "./MyCardBox";
 import { AnswerInputBox } from "./AnswerInputBox";
 import { AnswersBoard } from "./AnswersBoard";
 import { ParticipantList } from "@/components/shared/ParticipantList";
+import { GameActionButtons } from "./GameActionButtons"; // 💡 さっき作ったやつ！
 import { usePlayingRoomActions } from "@/app/hooks/usePlayingRoomActions";
 
 interface PlayingRoomProps {
@@ -14,6 +15,7 @@ interface PlayingRoomProps {
   players: Player[];
   myPlayer: Player;
   isHost: boolean;
+  onLeaveRoom: () => void;
 }
 
 export function PlayingRoom({
@@ -21,6 +23,7 @@ export function PlayingRoom({
   players,
   myPlayer,
   isHost,
+  onLeaveRoom,
 }: PlayingRoomProps) {
   const roundNumber = room.round_number || 1;
   const playingPlayers = players.filter((p) => !p.isSpectating);
@@ -28,16 +31,24 @@ export function PlayingRoom({
     playingPlayers.length > 0 &&
     playingPlayers.every((p) => p.answerText !== "");
 
-  // フックを呼び出して、必要な関数群を一気に受け取る！
   const actions = usePlayingRoomActions(room, myPlayer, isHost);
 
   return (
     <div className="flex flex-col w-full max-w-[1500px] mx-auto p-4 md:p-8 gap-1 h-full">
-      <div className="flex justify-between items-end font-bold text-black mb-2">
-        <h2 className="text-3xl md:text-4xl tracking-wider">
+      <div className="flex flex-wrap md:flex-nowrap justify-between items-center font-bold text-black mb-4 gap-y-3 relative">
+        <h2 className="text-3xl md:text-4xl tracking-wider shrink-0">
           第{roundNumber}回
         </h2>
-        <span className="text-lg md:text-xl">ルームID : {room.room_code}</span>
+        {myPlayer.isSpectating && (
+          <div className="w-full md:w-auto flex justify-center order-last md:order-none">
+            <div className="animate-pulse bg-gray-200 text-gray-600 font-bold px-4 md:px-6 py-2 md:py-3 rounded-full shadow-sm text-xs md:text-sm whitespace-nowrap">
+              👀 観戦中：次のラウンドから参加します
+            </div>
+          </div>
+        )}
+        <span className="text-lg md:text-xl shrink-0">
+          ルームID : {room.room_code}
+        </span>
       </div>
 
       <div className="flex flex-col md:flex-row gap-6">
@@ -47,15 +58,9 @@ export function PlayingRoom({
             theme={room.current_theme}
             isHost={isHost}
             onChangeTheme={actions.handleChangeTheme}
+            isProcessing={actions.isProcessing}
+            loadingAction={actions.loadingAction}
           />
-
-          {myPlayer.isSpectating && (
-            <div className="w-full flex justify-center mb-4">
-              <div className="animate-pulse bg-gray-200 text-gray-600 font-bold px-6 py-3 rounded-full shadow-sm text-sm">
-                👀 観戦中：次のラウンドから参加します
-              </div>
-            </div>
-          )}
 
           <div className="flex justify-center">
             {myPlayer.answerText || myPlayer.isSpectating ? (
@@ -68,6 +73,7 @@ export function PlayingRoom({
               <AnswerInputBox
                 player={myPlayer}
                 onSubmitAnswer={actions.handleSubmitAnswer}
+                isProcessing={actions.loadingAction === "submitAnswer"}
               />
             )}
           </div>
@@ -79,6 +85,8 @@ export function PlayingRoom({
             life={room.life}
             isHost={isHost}
             onChangeLife={actions.handleChangeLife}
+            isProcessing={actions.isProcessing}
+            loadingAction={actions.loadingAction}
           />
 
           <MyCardBox
@@ -87,6 +95,7 @@ export function PlayingRoom({
             showOpenButton={isAllAnswered && !myPlayer.isCardOpen}
             isSpectating={myPlayer.isSpectating}
             onOpenCards={actions.handleOpenMyCard}
+            loadingAction={actions.loadingAction}
           />
 
           <ParticipantList
@@ -96,22 +105,13 @@ export function PlayingRoom({
             onKickPlayer={actions.handleKickPlayer}
           />
 
-          <div className="flex flex-col gap-3">
-            {isHost && (
-              <button
-                className="ito-btn ito-btn-primary w-full py-3"
-                onClick={actions.handleNextRound}
-              >
-                つぎのお題
-              </button>
-            )}
-            <button
-              className="ito-btn ito-btn-outline w-full mt-2"
-              onClick={actions.handleLeaveRoom}
-            >
-              やめる
-            </button>
-          </div>
+          <GameActionButtons
+            isHost={isHost}
+            isProcessing={actions.isProcessing}
+            loadingAction={actions.loadingAction}
+            onNextRound={actions.handleNextRound}
+            onLeaveRoom={onLeaveRoom}
+          />
         </div>
       </div>
     </div>

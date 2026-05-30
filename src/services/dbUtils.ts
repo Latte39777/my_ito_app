@@ -19,12 +19,9 @@ export async function updateRoomAtomic(
 
   if (Object.keys(updateDataRaw).length === 0) return;
 
-  // Zodによる実行時検証を追加
-  const updateData = roomSchema.partial().parse(updateDataRaw);
-
   const { error: updateError } = await supabase
     .from("rooms")
-    .update(updateData)
+    .update(updateDataRaw)
     .eq("room_code", roomCode);
 
   if (updateError) {

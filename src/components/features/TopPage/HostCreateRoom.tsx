@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createRoom } from "@/services/roomService";
+import { THEMES_LIST } from "@/data/themes";
 
 interface HostCreateRoomProps {
   userName: string;
@@ -18,23 +19,41 @@ export function HostCreateRoom({ userName, iconId }: HostCreateRoomProps) {
       alert("名前を入力してください！");
       return;
     }
+
+    // クールダウン対策
+    const lastCreatedStr = localStorage.getItem("ito_last_created_at");
+    if (lastCreatedStr) {
+      const lastCreated = parseInt(lastCreatedStr, 10);
+      const now = Date.now();
+      const cooldownMs = 30 * 1000;
+
+      if (now - lastCreated < cooldownMs) {
+        const remainSeconds = Math.ceil(
+          (cooldownMs - (now - lastCreated)) / 1000,
+        );
+        alert(`部屋を作りすぎです！あと ${remainSeconds} 秒待ってください。`);
+        return;
+      }
+    }
+
     setLoading(true);
     try {
-      const defaultTheme = {
-        id: "theme-default",
-        title: "デートで行きたい場所と言えば？",
-        low: "カッコ悪い",
-        high: "カッコイイ",
-      };
+      // リストの中からランダムに1つお題を選ぶ
+      const randomIndex = Math.floor(Math.random() * THEMES_LIST.length);
+      const randomTheme = THEMES_LIST[randomIndex];
 
       const { roomCode, hostId } = await createRoom(
         userName,
         iconId,
-        defaultTheme,
+        randomTheme,
       );
+
+      // 部屋の作成に成功したら、現在時刻をローカルストレージに保存
+      localStorage.setItem("ito_last_created_at", Date.now().toString());
 
       router.push(`/room/${roomCode}?hostId=${hostId}`);
     } catch (error: unknown) {
+      console.error(error);
       alert(
         error instanceof Error ? error.message : "部屋の作成に失敗しました",
       );

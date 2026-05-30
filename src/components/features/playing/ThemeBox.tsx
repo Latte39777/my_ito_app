@@ -7,34 +7,42 @@ interface ThemeBoxProps {
   theme: Theme | null;
   isHost: boolean;
   onChangeTheme?: (newTheme: Theme) => void;
+  isProcessing?: boolean;
+  loadingAction?: string | null;
 }
 
-export function ThemeBox({ theme, isHost, onChangeTheme }: ThemeBoxProps) {
-  // 🎲 ランダムにお題を変更する処理
+export function ThemeBox({
+  theme,
+  isHost,
+  onChangeTheme,
+  isProcessing = false,
+  loadingAction,
+}: ThemeBoxProps) {
   const handleRandomTheme = () => {
-    if (!onChangeTheme) return;
+    if (!onChangeTheme || isProcessing) return; // 処理中は弾く
     const randomIndex = Math.floor(Math.random() * THEMES_LIST.length);
     onChangeTheme(THEMES_LIST[randomIndex]);
   };
 
-  // ✍️ 自由にお題を作成する処理（ブラウザ標準の入力窓を使うシンプル設計）
   const handleFreeTheme = () => {
-    if (!onChangeTheme) return;
+    if (!onChangeTheme || isProcessing) return; // 処理中は弾く
 
+    // ※ 後でここは綺麗なモーダルに書き換えますが、一旦今のままにしておきます
     const customTitle = prompt(
       "お題を入力してください",
       "例：好きなアニメは？",
     )?.trim();
-    if (!customTitle) return; // キャンセルされたら何もしない
-
-    const customLow = prompt("数字が小さい時の言葉", "例：おもしろくない");
+    if (!customTitle) return;
+    const customLow = prompt(
+      "数字が小さい時の言葉",
+      "例：おもしろくない",
+    )?.trim();
     if (!customLow) return;
-
-    const customHigh = prompt("数字が大きい時の言葉", "例：神アニメ");
+    const customHigh = prompt("数字が大きい時の言葉", "例：神アニメ")?.trim();
     if (!customHigh) return;
 
     onChangeTheme({
-      id: "custom", // 💡 フリーお題用の目印として適当なIDをつける
+      id: crypto.randomUUID(),
       title: customTitle,
       low: customLow,
       high: customHigh,
@@ -46,29 +54,28 @@ export function ThemeBox({ theme, isHost, onChangeTheme }: ThemeBoxProps) {
       <h3 className="text-2xl md:text-3xl font-black text-black text-center mt-2">
         お題：{theme?.title || "未設定"}
       </h3>
-
       <p className="text-lg md:text-xl font-bold text-center text-gray-800 mt-1">
         1：{theme?.low || "min"} 〜 100：{theme?.high || "max"}
       </p>
 
-      {/* ホスト専用の編集リンク */}
       {isHost && (
-        <div className="absolute bottom-3 right-4 flex gap-4 text-sm text-gray-400 font-bold z-10">
+        <div className="absolute bottom-3 right-4 flex gap-4 text-sm font-bold z-10">
           <button
             onClick={handleRandomTheme}
-            className="hover:text-black transition-colors cursor-pointer"
+            disabled={isProcessing}
+            className={`text-gray-400 hover:text-black transition-colors ${loadingAction === "theme" ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             お題変更
           </button>
           <button
             onClick={handleFreeTheme}
-            className="hover:text-black transition-colors cursor-pointer"
+            disabled={isProcessing}
+            className={`text-gray-400 hover:text-black transition-colors ${loadingAction === "theme" ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             フリーお題
           </button>
         </div>
       )}
-
       <div className="ito-speech-tail"></div>
     </div>
   );

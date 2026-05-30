@@ -1,6 +1,8 @@
+"use client";
+
 import { Room, Player } from "@/types/schema";
 import { ParticipantList } from "@/components/shared/ParticipantList";
-import { RoomInfoAndShare } from "./RoomInfoAndShare";
+import { RoomInfoAndShare } from "./RoomInfoAndShare"; // 💡 パスは環境に合わせてください
 
 interface WaitingRoomProps {
   room: Room;
@@ -9,6 +11,7 @@ interface WaitingRoomProps {
   isHost: boolean;
   onStartGame: () => void;
   onDisbandRoom: () => void;
+  isProcessing?: boolean; // 💡 追加
 }
 
 export function WaitingRoom({
@@ -18,6 +21,7 @@ export function WaitingRoom({
   isHost,
   onStartGame,
   onDisbandRoom,
+  isProcessing = false, // 💡 追加
 }: WaitingRoomProps) {
   return (
     <div className="flex-1 flex flex-col items-center p-5 w-full max-w-[400px] mx-auto pt-10">
@@ -25,12 +29,10 @@ export function WaitingRoom({
         ナンバートーク
       </h1>
 
-      {/* URLコピーとルームID表示を分離 */}
       <div className="w-full mb-8 flex flex-col items-center">
         <RoomInfoAndShare roomCode={room.room_code} />
       </div>
 
-      {/* 参加者リスト */}
       <div className="w-full mb-8">
         <ParticipantList
           players={players}
@@ -39,18 +41,22 @@ export function WaitingRoom({
         />
       </div>
 
-      {/* アクションボタン */}
       <div className="w-full flex flex-col gap-4 mb-8">
         {isHost ? (
           <>
             <button
               onClick={onStartGame}
-              className="ito-btn ito-btn-primary py-3 px-4 font-bold"
+              disabled={isProcessing}
+              className="ito-btn ito-btn-primary py-3 px-4 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              始める
+              {isProcessing ? "処理中..." : "始める"}
             </button>
-            <button onClick={onDisbandRoom} className="ito-btn ito-btn-outline">
-              解散する
+            <button
+              onClick={onDisbandRoom}
+              disabled={isProcessing}
+              className="ito-btn ito-btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isProcessing ? "処理中..." : "解散する"}
             </button>
           </>
         ) : (
@@ -58,8 +64,12 @@ export function WaitingRoom({
             <div className="ito-btn bg-gray-300 text-gray-600 border-none cursor-not-allowed text-center">
               ホストの開始を待っています...
             </div>
-            <button onClick={onDisbandRoom} className="ito-btn ito-btn-outline">
-              退出する
+            <button
+              onClick={onDisbandRoom}
+              disabled={isProcessing}
+              className="ito-btn ito-btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isProcessing ? "処理中..." : "退出する"}
             </button>
           </>
         )}

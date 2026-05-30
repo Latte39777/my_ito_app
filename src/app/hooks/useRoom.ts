@@ -1,7 +1,10 @@
+// src/hooks/useRoom.ts
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Room, Player } from "@/types/schema";
+import { endGame, startGame } from "@/services/gameService"; // 💡 startGameを追加
+import { leaveRoom } from "@/services/playerService";
 
 export function useRoom(roomCode: string) {
   const router = useRouter();
@@ -11,6 +14,9 @@ export function useRoom(roomCode: string) {
   const [players, setPlayers] = useState<Player[]>([]);
   const [myPlayerId, setMyPlayerId] = useState<string>("");
   const [loading, setLoading] = useState(true);
+
+  // 💡 追加：アクション（開始・退出）の処理中状態
+  const [isActionLoading, setIsActionLoading] = useState(false);
 
   // 初期データの取得と参加処理
   useEffect(() => {
@@ -127,6 +133,54 @@ export function useRoom(roomCode: string) {
     };
   }, [roomCode, router]);
 
-  // 画面側に渡したいデータだけを return する
-  return { room, players, myPlayerId, loading };
+  // 💡 ゲーム開始ロジック
+  const handleStartGame = async () => {
+    if (!room || isActionLoading) return;
+    setIsActionLoading(true);
+    try {
+      await startGame(room.room_code);
+    } catch (error) {
+      console.error(error);
+      alert("ゲームの開始に失敗しました。");
+    } finally {
+      setIsActionLoading(false);
+    }
+  };
+
+  // 💡 退出・解散ロジック
+  const handleQuitRoom = async () => {
+    if (!room || isActionLoading) return;
+
+    const isHost = players.find((p) => p.id === myPlayerId)?.isHost;
+    const confirmMessage = isHost
+      ? "ルームを解散しますか？"
+      : "ルームから退出しますか？";
+
+    if (!confirm(confirmMessage)) return;
+
+    setIsActionLoading(true);
+    try {
+      if (isHost) {
+        await endGame(room.room_code);
+      } else {
+        await leaveRoom(room.room_code, myPlayerId);
+      }
+      localStorage.removeItem(`ito_player_${roomCode}`);
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+      alert("退出に失敗しました");
+      setIsActionLoading(false);
+    }
+  };
+
+  return {
+    room,
+    players,
+    myPlayerId,
+    loading,
+    isActionLoading,
+    handleStartGame,
+    handleQuitRoom,
+  };
 }

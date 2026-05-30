@@ -2,7 +2,7 @@
 
 import { HostCreateRoom } from "@/components/features/TopPage/HostCreateRoom";
 import { GuestJoinForm } from "@/components/features/TopPage/GuestJoinForm";
-import { AnimatedBackground } from "@/components/AnimatedBackground";
+import { AnimatedBackground } from "@/components/shared/AnimatedBackground";
 import { UserSetupForm } from "@/components/features/TopPage/UserSetupForm";
 import { useUserSetup } from "@/app/hooks/useUserSetup";
 
