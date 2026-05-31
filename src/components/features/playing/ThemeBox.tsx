@@ -36,20 +36,18 @@ export function ThemeBox({
 
   return (
     <>
-      {/* 🌟 修正1: items-center を外して、親をシンプルな縦並び（flex-col）にする */}
-      <div className="ito-box relative flex min-h-[120px] w-full flex-col p-4 md:p-6">
-        <div className="flex flex-1 flex-col items-center justify-center gap-1 pb-4">
-          <h3 className="font-hana mt-2 text-center text-2xl font-black text-black md:text-3xl lg:text-4xl">
+      <div className="ito-box relative flex w-full flex-col p-3 md:min-h-[120px] md:p-4 lg:min-h-[130px] lg:p-5">
+        <div className="flex flex-1 flex-col items-center justify-center">
+          <h3 className="font-hana text-center text-xl leading-tight font-black text-black md:text-2xl lg:text-3xl">
             お題：{theme?.title || "未設定"}
           </h3>
-          {/* break-words を追加して、長いテキストでもはみ出さずに折り返すようにする */}
-          <p className="font-hana -mb-4 pt-2 text-center text-lg font-bold break-words text-gray-800 md:text-xl">
+          <p className="font-hana mt-1 text-center text-sm leading-tight font-bold break-words text-gray-800 md:mt-2 md:text-base lg:text-lg">
             1：{theme?.low || "min"} 〜 100：{theme?.high || "max"}
           </p>
         </div>
 
         {isHost && (
-          <div className="mt-auto -mb-4 flex w-full justify-end gap-4 text-sm font-bold">
+          <div className="mt-auto -mr-1 -mb-3 flex w-full justify-end gap-3 text-xs font-bold md:-mr-2 md:-mb-3 md:text-sm lg:gap-4">
             <button
               onClick={handleRandomTheme}
               disabled={isProcessing}

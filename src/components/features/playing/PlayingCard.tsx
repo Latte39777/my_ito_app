@@ -57,7 +57,6 @@ const THEMES = [
     text: "text-cyan-900",
   },
 ];
-
 export function PlayingCard({ card, isCardOpen }: PlayingCardProps) {
   const theme = useMemo(() => {
     if (card === null) return THEMES[0];
@@ -75,31 +74,16 @@ export function PlayingCard({ card, isCardOpen }: PlayingCardProps) {
   const borderClass = isCardOpen
     ? `border-dashed shadow-none ${theme.borderOpen}`
     : `shadow-md ${theme.border}`;
-  <svg viewBox="0 0 128 176" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect
-      x="4"
-      y="4"
-      width="120"
-      height="168"
-      rx="16"
-      stroke="#333"
-      stroke-width="8"
-      fill="white"
-    />
-
-    <path d="M4,4 L64,4 A60,60 0 0,0 4,64 Z" fill="#333" />
-    <path d="M124,172 L64,172 A60,60 0 0,0 124,112 Z" fill="#333" />
-
-    <polygon points="64,79 70,88 64,97 58,88" fill="#333" />
-  </svg>;
 
   return (
     <div
-      className={`relative flex h-44 w-32 items-center justify-center overflow-hidden rounded-xl border-2 bg-white select-none ${borderClass} `}
+      // 💡 修正1: スマホでは h-32 w-24 (128x96px) に縮小し、md以上で元の h-44 w-32 に戻す
+      className={`relative flex h-32 w-24 items-center justify-center overflow-hidden rounded-xl border-2 bg-white transition-all select-none md:h-44 md:w-32 ${borderClass} `}
     >
       {/* 🌟 1. 左上の角装飾 */}
       <svg
-        className={`absolute top-0 left-0 h-16 w-16 ${ornamentColor}`}
+        // 💡 修正2: 装飾もスマホでは h-10 w-10 に縮める
+        className={`absolute top-0 left-0 h-10 w-10 md:h-16 md:w-16 ${ornamentColor}`}
         viewBox="0 0 16 16"
         fill="currentColor"
       >
@@ -108,7 +92,7 @@ export function PlayingCard({ card, isCardOpen }: PlayingCardProps) {
 
       {/* 🌟 2. 右下の角装飾 */}
       <svg
-        className={`absolute right-0 bottom-0 h-16 w-16 ${ornamentColor} rotate-180`}
+        className={`absolute right-0 bottom-0 h-10 w-10 rotate-180 md:h-16 md:w-16 ${ornamentColor}`}
         viewBox="0 0 16 16"
         fill="currentColor"
       >
@@ -117,7 +101,8 @@ export function PlayingCard({ card, isCardOpen }: PlayingCardProps) {
 
       {/* 🌟 3. 上部の飾り罫 */}
       <svg
-        className={`absolute top-1 left-0 h-8 w-full ${ornamentColor}`}
+        // 💡 修正3: 上下の飾り線も少し細く（h-6）する
+        className={`absolute top-1 left-0 h-6 w-full md:h-8 ${ornamentColor}`}
         viewBox="0 0 128 32"
         fill="currentColor"
         stroke="currentColor"
@@ -132,7 +117,7 @@ export function PlayingCard({ card, isCardOpen }: PlayingCardProps) {
 
       {/* 🌟 4. 下部の飾り罫 */}
       <svg
-        className={`absolute bottom-1 left-0 h-8 w-full ${ornamentColor} rotate-180`}
+        className={`absolute bottom-1 left-0 h-6 w-full rotate-180 md:h-8 ${ornamentColor}`}
         viewBox="0 0 128 32"
         fill="currentColor"
         stroke="currentColor"
@@ -147,7 +132,8 @@ export function PlayingCard({ card, isCardOpen }: PlayingCardProps) {
 
       {/* 中央の大きな数字 */}
       <span
-        className={`font-hana z-10 text-6xl tracking-tighter drop-shadow-sm ${textColor}`}
+        // 💡 修正4: 文字サイズをスマホでは text-5xl に縮小する
+        className={`font-hana z-10 text-5xl tracking-tighter drop-shadow-sm md:text-6xl ${textColor}`}
       >
         {card !== null ? card : "?"}
       </span>

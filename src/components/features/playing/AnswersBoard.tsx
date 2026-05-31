@@ -17,7 +17,7 @@ export function AnswersBoard({
 
   return (
     <div className="ito-wide-container">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-2 md:gap-4 lg:grid-cols-2">
         {playingPlayers.map((p) => (
           <AnswerCard
             key={p.id}

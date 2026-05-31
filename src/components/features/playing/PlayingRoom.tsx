@@ -35,8 +35,9 @@ export function PlayingRoom({
 
   return (
     <div className="mx-auto flex h-full w-full max-w-[1500px] flex-col gap-1 p-4 md:p-4">
-      <div className="font-hana relative mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-3 pr-16 font-bold text-black md:pr-26">
-        <h2 className="shrink-0 text-3xl tracking-wider md:text-4xl">
+      {/* 0段目: ヘッダー (ルームIDなど) */}
+      <div className="font-hana relative flex flex-wrap items-center justify-between gap-x-4 gap-y-3 pr-19 font-bold text-black md:mb-2 md:pr-26">
+        <h2 className="shrink-0 text-2xl tracking-wider md:text-4xl">
           第{roundNumber}回
         </h2>
         {myPlayer.isSpectating && (
@@ -46,23 +47,29 @@ export function PlayingRoom({
             </div>
           </div>
         )}
-        <span className="shrink-0 text-lg md:text-xl">
+        <span className="shrink-0 text-sm md:text-xl">
           ルームID : {room.room_code}
         </span>
       </div>
 
-      <div className="flex flex-col gap-6 md:flex-row">
-        {/* 左カラム */}
-        <div className="flex min-w-0 flex-1 flex-col gap-10">
-          <ThemeBox
-            theme={room.current_theme}
-            isHost={isHost}
-            onChangeTheme={actions.handleChangeTheme}
-            isProcessing={actions.isProcessing}
-            loadingAction={actions.loadingAction}
-          />
+      {/* 💡 修正1: 大枠のコンテナ。スマホでは gap-4 の縦1列、PCでは gap-6 の左右カラムになる */}
+      <div className="flex flex-col gap-4 md:flex-row md:gap-6">
+        {/* 左カラム（PC用） */}
+        {/* 💡 修正2: `contents` により、スマホではこの div 枠が消滅し、中身が外の1列に合流します */}
+        <div className="contents md:flex md:min-w-0 md:flex-1 md:flex-col md:gap-10">
+          {/* 1段目: お題 */}
+          <div className="order-1 md:order-none">
+            <ThemeBox
+              theme={room.current_theme}
+              isHost={isHost}
+              onChangeTheme={actions.handleChangeTheme}
+              isProcessing={actions.isProcessing}
+              loadingAction={actions.loadingAction}
+            />
+          </div>
 
-          <div className="flex justify-center">
+          {/* 3段目: 回答 */}
+          <div className="order-3 -mt-5 flex justify-center md:order-none md:mt-0">
             {myPlayer.answerText || myPlayer.isSpectating ? (
               <AnswersBoard
                 players={players}
@@ -79,40 +86,56 @@ export function PlayingRoom({
           </div>
         </div>
 
-        {/* 右カラム */}
-        {/* 🌟 修正3: md:w-[220px] にして中画面ではスリム化。lg:w-[280px] で大画面は元のサイズに */}
-        <div className="flex w-full shrink-0 flex-col gap-8 md:w-[220px] lg:w-[280px]">
-          <LifeBox
-            life={room.life}
-            isHost={isHost}
-            onChangeLife={actions.handleChangeLife}
-            isProcessing={actions.isProcessing}
-            loadingAction={actions.loadingAction}
-          />
+        {/* 右カラム（PC用） */}
+        {/* 💡 修正3: こちらもスマホでは枠が消滅し、中身が外に合流します */}
+        <div className="contents md:flex md:w-[220px] md:shrink-0 md:flex-col md:gap-8 lg:w-[280px]">
+          {/* 2段目: カード・ライフ・参加者 */}
+          {/* 💡 修正4: スマホ限定で Grid 2列（grid-cols-2）の専用レイアウトを組みます */}
+          <div className="order-2 mt-1 grid grid-cols-2 grid-rows-[auto_1fr] gap-2 md:order-none md:flex md:flex-col md:gap-8 lg:gap-8">
+            {/* 左側: カード (縦2行分をぶち抜いて使う) */}
+            <div className="row-span-2 md:order-2">
+              <MyCardBox
+                card={myPlayer.card}
+                isCardOpen={myPlayer.isCardOpen}
+                showOpenButton={isAllAnswered && !myPlayer.isCardOpen}
+                isSpectating={myPlayer.isSpectating}
+                onOpenCards={actions.handleOpenMyCard}
+                loadingAction={actions.loadingAction}
+              />
+            </div>
 
-          <MyCardBox
-            card={myPlayer.card}
-            isCardOpen={myPlayer.isCardOpen}
-            showOpenButton={isAllAnswered && !myPlayer.isCardOpen}
-            isSpectating={myPlayer.isSpectating}
-            onOpenCards={actions.handleOpenMyCard}
-            loadingAction={actions.loadingAction}
-          />
+            {/* 右側・上: ライフ */}
+            <div className="md:order-1">
+              <LifeBox
+                life={room.life}
+                isHost={isHost}
+                onChangeLife={actions.handleChangeLife}
+                isProcessing={actions.isProcessing}
+                loadingAction={actions.loadingAction}
+              />
+            </div>
 
-          <ParticipantList
-            players={players}
-            myPlayerId={myPlayer.id}
-            isHost={isHost}
-            onKickPlayer={actions.handleKickPlayer}
-          />
+            {/* 右側・下: 参加者 (先ほど max-h を入れたので、左のカードの高さに守られて絶対にはみ出しません) */}
+            <div className="min-h-0 md:order-3">
+              <ParticipantList
+                players={players}
+                myPlayerId={myPlayer.id}
+                isHost={isHost}
+                onKickPlayer={actions.handleKickPlayer}
+              />
+            </div>
+          </div>
 
-          <GameActionButtons
-            isHost={isHost}
-            isProcessing={actions.isProcessing}
-            loadingAction={actions.loadingAction}
-            onNextRound={actions.handleNextRound}
-            onLeaveRoom={onLeaveRoom}
-          />
+          {/* 4段目: ボタン群 */}
+          <div className="order-4 md:order-none">
+            <GameActionButtons
+              isHost={isHost}
+              isProcessing={actions.isProcessing}
+              loadingAction={actions.loadingAction}
+              onNextRound={actions.handleNextRound}
+              onLeaveRoom={onLeaveRoom}
+            />
+          </div>
         </div>
       </div>
     </div>

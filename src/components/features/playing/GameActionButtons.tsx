@@ -1,4 +1,3 @@
-// src/components/features/playing/GameActionButtons.tsx
 "use client";
 
 import { ConfirmButton } from "@/components/shared/ConfirmButton";
@@ -19,36 +18,40 @@ export function GameActionButtons({
   onLeaveRoom,
 }: GameActionButtonsProps) {
   return (
-    // 💡 修正1: 全体の隙間(gap)を画面サイズに合わせて微調整
-    <div className="flex flex-col gap-2 md:gap-2.5 lg:gap-3">
+    // 💡 修正3: スマホ時は `flex-row-reverse` を使い、HTMLの順番を変えずに右に「次へ」、左に「やめる」を配置！
+    // md(中画面)以上では `md:flex-col` になり、今まで通り縦に並びます。
+    <div className="flex flex-row-reverse items-center gap-3 md:flex-col md:items-stretch md:gap-2.5 lg:gap-3">
       {isHost && (
-        <ConfirmButton
-          onConfirm={onNextRound}
-          defaultText={
-            loadingAction === "nextRound" ? "処理中..." : "つぎのお題"
-          }
-          confirmText="本当に次へ進む？"
-          // 💡 修正2: 「つぎのお題」ボタンの高さ(py)と文字サイズを段階的に変化
-          // 今の lg:py-3 を基準にして、md では py-2.5、スマホでは py-2 とします
-          baseClassName={`ito-btn ito-btn-primary w-full py-2 text-sm md:py-2.5 md:text-base lg:py-3 ${
-            loadingAction === "nextRound" ? "opacity-50 cursor-not-allowed" : ""
-          } ${isProcessing && loadingAction !== "nextRound" ? "cursor-not-allowed" : ""}`}
-          confirmClassName="!bg-blue-700"
-          disabled={isProcessing}
-        />
+        <div className="flex-1">
+          <ConfirmButton
+            onConfirm={onNextRound}
+            defaultText={
+              loadingAction === "nextRound" ? "処理中..." : "つぎのお題"
+            }
+            confirmText="本当に次へ進む？"
+            baseClassName={`ito-btn ito-btn-primary w-full py-2.5 text-sm md:py-2.5 md:text-base lg:py-3 ${
+              loadingAction === "nextRound"
+                ? "opacity-50 cursor-not-allowed"
+                : ""
+            } ${isProcessing && loadingAction !== "nextRound" ? "cursor-not-allowed" : ""}`}
+            confirmClassName="!bg-blue-700"
+            disabled={isProcessing}
+          />
+        </div>
       )}
 
-      <ConfirmButton
-        onConfirm={onLeaveRoom}
-        defaultText="やめる"
-        confirmText="本当にやめる？"
-        // 💡 修正3: 「やめる」ボタンも同様に段階的に変化させ、上部余白(mt)も調整
-        baseClassName={`ito-btn ito-btn-outline w-full mt-1 py-2 text-sm md:mt-1.5 md:py-0.5 md:text-base lg:mt-2 lg:py-1 ${
-          isProcessing ? "cursor-not-allowed" : ""
-        }`}
-        confirmClassName="!bg-red-500 !text-white !border-black"
-        disabled={isProcessing}
-      />
+      <div className="flex-1">
+        <ConfirmButton
+          onConfirm={onLeaveRoom}
+          defaultText="やめる"
+          confirmText="本当にやめる？"
+          baseClassName={`ito-btn ito-btn-outline w-full py-1 text-sm md:text-base  ${
+            isProcessing ? "cursor-not-allowed" : ""
+          }`}
+          confirmClassName="!bg-red-500 !text-white !border-black"
+          disabled={isProcessing}
+        />
+      </div>
     </div>
   );
 }

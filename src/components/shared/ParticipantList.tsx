@@ -23,15 +23,16 @@ export function ParticipantList({
   };
 
   return (
-    // 💡 修正1: 元の p-4 gap-3 を lg(大画面) の基準とし、スマホと md(中画面) では少しスリムに
-    <div className="ito-box flex w-full flex-col gap-2 p-3 md:gap-2.5 md:p-3.5 lg:gap-3 lg:p-4">
-      {/* 💡 修正2: 見出しの文字サイズと下の余白(pb)を段階的に変化 */}
-      <h2 className="border-b border-gray-200 pb-1.5 text-lg font-bold text-black md:pb-2 md:text-xl lg:text-xl">
+    // 💡 修正1: スマホ時は高さを100% (h-full) にして親のGridに追従させ、パディングも極限まで(p-2)削る
+    <div className="ito-box flex h-full w-full flex-col gap-1.5 p-2 md:h-auto md:gap-2.5 md:p-3.5 lg:gap-3 lg:p-4">
+      {/* 💡 修正2: 見出しもスマホ時は text-base にして省スペース化 */}
+      <h2 className="border-b border-gray-200 text-sm font-bold text-black md:pb-1.5 md:text-lg lg:text-xl">
         参加者
       </h2>
 
-      {/* 💡 修正3: スクロール対応！ maxHeight(max-h) を設定し、溢れたら縦スクロール(overflow-y-auto)させる */}
-      <div className="flex max-h-[140px] flex-col gap-1.5 overflow-y-auto pr-1 md:max-h-[180px] lg:max-h-[240px] lg:gap-2">
+      {/* 💡 修正3: max-h をスマホでは外し、flex-1 min-h-0 を指定。これでカードの高さに合わせて勝手に伸び縮みします！ */}
+      {/* PC版（md以上）の時は md:flex-none と md:max-h-[180px] で元のサイズ制限に戻ります */}
+      <div className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto pr-1 md:max-h-[180px] md:flex-none md:gap-1.5 lg:max-h-[240px] lg:gap-2">
         {players.map((player) => {
           const isMe = player.id === myPlayerId;
 
@@ -42,7 +43,6 @@ export function ParticipantList({
             >
               <PlayerInfo player={player} isMe={isMe} isSmall={true} />
 
-              {/* 三点リーダーボタン（ホストかつ自分以外に表示） */}
               {isHost && !isMe && (
                 <button
                   onClick={() => handleKickClick(player)}

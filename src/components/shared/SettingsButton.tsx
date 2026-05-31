@@ -46,7 +46,7 @@ export function SettingsButton({
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="ito-box flex h-10 w-10 items-center justify-center text-xl transition-transform"
+        className="ito-box flex h-8 w-8 items-center justify-center text-xl transition-transform md:h-10 md:w-10"
         aria-label="設定"
       >
         <TbSettingsFilled size={24} className="text-gray-700" />
