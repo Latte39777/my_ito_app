@@ -21,25 +21,30 @@ export function AnswerCard({ player, isMe, onEditAnswer }: AnswerCardProps) {
 
   return (
     <>
-      <div className="ito-box flex flex-col gap-2 p-4">
-        <div className="mb-1 flex items-center justify-between border-b-2 border-gray-100 pb-2">
-          <PlayerInfo player={player} isMe={isMe} size="md" />
-
-          {isMe && (
-            <button
-              onClick={() => setIsOpen(true)} // 💡 モーダルを開く
-              className="ml-2 shrink-0 cursor-pointer text-sm font-bold text-gray-400 transition-colors hover:text-black"
-            >
-              回答を変更
-            </button>
-          )}
+      <div className="ito-box flex flex-col gap-2 px-4 py-2">
+        <div className="mb-1 border-b-2 border-gray-100 pb-2">
+          <PlayerInfo
+            player={player}
+            isMe={isMe}
+            isSmall={false}
+            actionButton={
+              isMe ? (
+                <button
+                  onClick={() => setIsOpen(true)}
+                  className="cursor-pointer text-[10px] font-bold whitespace-nowrap text-gray-400 transition-colors hover:text-black md:text-[11px] lg:text-[12px]"
+                >
+                  回答を変更
+                </button>
+              ) : undefined
+            }
+          />
         </div>
 
         <div className="mt-2 flex items-center justify-between gap-4">
-          <div className="flex-1 text-2xl leading-tight font-black break-words text-black">
+          <div className="flex-1 text-xl leading-tight font-black break-words text-black lg:text-2xl">
             {player.answerText || "..."}
           </div>
-          <div className="font-hana shrink-0 text-5xl font-black text-black">
+          <div className="font-hana shrink-0 pb-2 text-5xl font-black text-black">
             {player.isCardOpen ? player.card : "?"}
           </div>
         </div>

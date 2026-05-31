@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { THEMES_LIST } from "@/data/themes";
 import { Theme } from "@/types/schema";
-import { FreeThemeModal } from "./FreeThemeModal"; // 💡 追加
+import { FreeThemeModal } from "./FreeThemeModal";
 
 interface ThemeBoxProps {
   theme: Theme | null;
@@ -36,16 +36,20 @@ export function ThemeBox({
 
   return (
     <>
-      <div className="ito-box relative flex min-h-[120px] w-full flex-col items-center justify-center gap-2 p-5 md:p-4">
-        <h3 className="font-hana mt-2 text-center text-2xl font-black text-black md:text-3xl">
-          お題：{theme?.title || "未設定"}
-        </h3>
-        <p className="font-hana mt-1 text-center text-lg font-bold text-gray-800 md:text-xl">
-          1：{theme?.low || "min"} 〜 100：{theme?.high || "max"}
-        </p>
+      {/* 🌟 修正1: items-center を外して、親をシンプルな縦並び（flex-col）にする */}
+      <div className="ito-box relative flex min-h-[120px] w-full flex-col p-4 md:p-6">
+        <div className="flex flex-1 flex-col items-center justify-center gap-1 pb-4">
+          <h3 className="font-hana mt-2 text-center text-2xl font-black text-black md:text-3xl lg:text-4xl">
+            お題：{theme?.title || "未設定"}
+          </h3>
+          {/* break-words を追加して、長いテキストでもはみ出さずに折り返すようにする */}
+          <p className="font-hana -mb-4 pt-2 text-center text-lg font-bold break-words text-gray-800 md:text-xl">
+            1：{theme?.low || "min"} 〜 100：{theme?.high || "max"}
+          </p>
+        </div>
 
         {isHost && (
-          <div className="absolute right-4 bottom-3 z-10 flex gap-4 text-sm font-bold">
+          <div className="mt-auto -mb-4 flex w-full justify-end gap-4 text-sm font-bold">
             <button
               onClick={handleRandomTheme}
               disabled={isProcessing}
@@ -54,7 +58,7 @@ export function ThemeBox({
               お題変更
             </button>
             <button
-              onClick={() => setIsOpen(true)} // 💡 モーダルを開く
+              onClick={() => setIsOpen(true)}
               disabled={isProcessing}
               className={`text-gray-400 transition-colors hover:text-black ${loadingAction === "theme" ? "cursor-not-allowed opacity-50" : ""}`}
             >
@@ -65,7 +69,6 @@ export function ThemeBox({
         <div className="ito-speech-tail"></div>
       </div>
 
-      {/* 💡 開いている時だけ描画（マウント）する */}
       {isOpen && (
         <FreeThemeModal
           onClose={() => setIsOpen(false)}

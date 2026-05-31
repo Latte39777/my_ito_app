@@ -25,7 +25,7 @@ export function WaitingRoom({
   isProcessing = false,
 }: WaitingRoomProps) {
   return (
-    <div className="mx-auto flex w-full max-w-[400px] flex-1 flex-col items-center p-5 pt-10">
+    <div className="ito-narrow-container pt-10">
       <h1 className="font-kei mb-6 text-4xl font-black tracking-[2px] text-black">
         ナンバートーク
       </h1>

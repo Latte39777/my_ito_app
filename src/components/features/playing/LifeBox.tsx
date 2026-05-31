@@ -18,27 +18,27 @@ export function LifeBox({
   loadingAction,
 }: LifeBoxProps) {
   return (
-    <div className="ito-box p-4 flex items-center justify-between min-w-[180px] h-[80px]">
-      <div className="flex-1 flex justify-center items-center">
-        <span className="text-3xl font-black text-black tracking-widest flex items-center gap-1">
-          <TbHeartFilled size={40} className="text-[#E63946]" />
-          <span className="text-4xl font-black text-black px-3">× {life}</span>
+    <div className="ito-box flex min-h-[80px] items-center justify-between p-2 md:p-2 lg:p-4">
+      <div className="flex flex-1 items-center justify-center">
+        <span className="flex items-center gap-2 text-2xl font-black tracking-widest text-black md:text-3xl lg:text-4xl">
+          <TbHeartFilled className="text-[#E63946]" />
+          <span className="px-2">× {life}</span>
         </span>
       </div>
 
       {isHost && (
-        <div className="flex flex-col gap-1 border-l-2 border-black pl-2 ml-2">
+        <div className="ml-1 flex flex-col gap-1 border-l-2 border-black pl-1 md:ml-1 md:pl-1 lg:ml-2 lg:pl-2">
           <button
             onClick={() => onChangeLife?.(life + 1)}
             disabled={isProcessing}
-            className={`text-black hover:bg-gray-200 p-1 rounded font-black text-xl transition-colors ${loadingAction === "life" ? "opacity-50 cursor-not-allowed" : ""}`}
+            className={`rounded p-1 text-xl font-black text-black transition-colors hover:bg-gray-200 ${loadingAction === "life" ? "cursor-not-allowed opacity-50" : ""}`}
           >
             <TbPlus />
           </button>
           <button
             onClick={() => onChangeLife?.(life - 1)}
             disabled={isProcessing}
-            className={`text-black hover:bg-gray-200 p-1 rounded font-black text-xl transition-colors ${loadingAction === "life" ? "opacity-50 cursor-not-allowed" : ""}`}
+            className={`rounded p-1 text-xl font-black text-black transition-colors hover:bg-gray-200 ${loadingAction === "life" ? "cursor-not-allowed opacity-50" : ""}`}
           >
             <TbMinus />
           </button>

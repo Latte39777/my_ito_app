@@ -1,4 +1,4 @@
-import { Player } from "@/types/schema";
+import { Player, playerSchema } from "@/types/schema";
 import { updateRoomAtomic } from "./dbUtils";
 
 // プレイヤーが行うアクションの関数群
@@ -8,9 +8,12 @@ export const submitMyAnswer = async (
   myId: string,
   text: string,
 ) => {
+  const parsedPlayerId = playerSchema.shape.id.parse(myId);
+  const parsedAnswerText = playerSchema.shape.answerText.parse(text);
+
   await updateRoomAtomic(roomCode, (room) => {
     const players = room.players.map((p) =>
-      p.id === myId ? { ...p, answerText: text } : p,
+      p.id === parsedPlayerId ? { ...p, answerText: parsedAnswerText } : p,
     );
     return { players };
   });
@@ -18,9 +21,11 @@ export const submitMyAnswer = async (
 
 // 自分のカードをオープンする
 export const openMyCard = async (roomCode: string, myId: string) => {
+  const parsedPlayerId = playerSchema.shape.id.parse(myId);
+
   await updateRoomAtomic(roomCode, (room) => {
     const players = room.players.map((p) =>
-      p.id === myId ? { ...p, isCardOpen: true } : p,
+      p.id === parsedPlayerId ? { ...p, isCardOpen: true } : p,
     );
     return { players };
   });
@@ -28,9 +33,11 @@ export const openMyCard = async (roomCode: string, myId: string) => {
 
 // ルームを退出する
 export const leaveRoom = async (roomCode: string, playerId: string) => {
+  const parsedPlayerId = playerSchema.shape.id.parse(playerId);
+
   await updateRoomAtomic(roomCode, (room) => {
     // filter を使って、自分（playerId）以外のプレイヤーだけを残す
-    const players = room.players.filter((p) => p.id !== playerId);
+    const players = room.players.filter((p) => p.id !== parsedPlayerId);
     return { players };
   });
 };
@@ -47,7 +54,7 @@ export const joinRoom = async (
     if (room.players.some((p) => p.id === playerId)) return {};
 
     const isCurrentlyPlaying = room.status === "playing";
-    const newPlayer: Player = {
+    const newPlayer: Player = playerSchema.parse({
       id: playerId,
       name,
       icon,
@@ -57,7 +64,7 @@ export const joinRoom = async (
       isCardOpen: false,
       isOnline: true,
       isSpectating: isCurrentlyPlaying,
-    };
+    });
 
     return { players: [...room.players, newPlayer] };
   });
@@ -69,10 +76,13 @@ export const changePlayerName = async (
   playerId: string,
   newName: string,
 ) => {
+  const parsedPlayerId = playerSchema.shape.id.parse(playerId);
+  const parsedName = playerSchema.shape.name.parse(newName);
+
   await updateRoomAtomic(roomCode, (room) => {
     // filter を使って、自分（playerId）以外のプレイヤーだけを残す
     const players = room.players.map((p) =>
-      p.id === playerId ? { ...p, name: newName } : p,
+      p.id === parsedPlayerId ? { ...p, name: parsedName } : p,
     );
     return { players };
   });

@@ -16,10 +16,12 @@ export function UserSetupForm({
       <input
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
-        className="ito-input py-2 px-3 text-xl"
+        onBlur={(e) => setUserName(e.target.value.trim())}
+        maxLength={12}
+        className="ito-input px-3 py-2 text-xl"
         placeholder="あなたの名前"
       />
-      <div className="shrink-0 mb-1">
+      <div className="mb-1 shrink-0">
         <IconSelector selectedIcon={iconId} onSelectIcon={setIconId} />
       </div>
     </div>

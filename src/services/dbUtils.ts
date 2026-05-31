@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import { Room, roomSchema } from "@/types/schema";
+import { Room } from "@/types/schema";
 
 export async function updateRoomAtomic(
   roomCode: string,

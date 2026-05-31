@@ -15,18 +15,20 @@ export function GuestJoinForm({ userName, iconId }: GuestJoinFormProps) {
   const router = useRouter();
 
   const handleJoin = async () => {
-    if (!userName.trim()) {
+    const trimmedName = userName.trim();
+    if (!trimmedName) {
       alert("名前を入力してください！");
       return;
     }
-    if (roomCode.length !== 4) {
+    const trimmedCode = roomCode.trim().toUpperCase();
+    if (trimmedCode.length !== 4) {
       alert("部屋コードは4桁で入力してください！");
       return;
     }
 
     setLoading(true);
     try {
-      const code = roomCode.toUpperCase();
+      const code = trimmedCode;
 
       const { data, error } = await supabase
         .from("rooms")
@@ -39,7 +41,7 @@ export function GuestJoinForm({ userName, iconId }: GuestJoinFormProps) {
       }
 
       router.push(
-        `/room/${code}?name=${encodeURIComponent(userName)}&icon=${iconId}`,
+        `/room/${code}?name=${encodeURIComponent(trimmedName)}&icon=${iconId}`,
       );
     } catch (error: unknown) {
       alert(error instanceof Error ? error.message : "エラーが発生しました。");
@@ -50,7 +52,7 @@ export function GuestJoinForm({ userName, iconId }: GuestJoinFormProps) {
 
   return (
     <section className="ito-box flex flex-col gap-4 p-5">
-      <h2 className="text-xl font-bold text-black m-0">部屋に入る</h2>
+      <h2 className="m-0 text-xl font-bold text-black">部屋に入る</h2>
 
       <input
         type="text"
@@ -64,7 +66,7 @@ export function GuestJoinForm({ userName, iconId }: GuestJoinFormProps) {
       <button
         onClick={handleJoin}
         disabled={loading || roomCode.length !== 4}
-        className="ito-btn ito-btn-dark font-bold py-3 cursor-pointer disabled:opacity-50 transition-opacity"
+        className="ito-btn ito-btn-dark cursor-pointer py-3 font-bold transition-opacity disabled:opacity-50"
       >
         {loading ? "確認中..." : "参加する"}
       </button>

@@ -15,7 +15,8 @@ export function HostCreateRoom({ userName, iconId }: HostCreateRoomProps) {
   const router = useRouter();
 
   const handleCreate = async () => {
-    if (!userName.trim()) {
+    const trimmedName = userName.trim();
+    if (!trimmedName) {
       alert("名前を入力してください！");
       return;
     }
@@ -43,7 +44,7 @@ export function HostCreateRoom({ userName, iconId }: HostCreateRoomProps) {
       const randomTheme = THEMES_LIST[randomIndex];
 
       const { roomCode, hostId } = await createRoom(
-        userName,
+        trimmedName,
         iconId,
         randomTheme,
       );
@@ -66,7 +67,7 @@ export function HostCreateRoom({ userName, iconId }: HostCreateRoomProps) {
     <button
       onClick={handleCreate}
       disabled={loading || !userName.trim()}
-      className="ito-btn ito-btn-primary py-4 px-4 disabled:opacity-50"
+      className="ito-btn ito-btn-primary px-4 py-4 disabled:opacity-50"
     >
       {loading ? "部屋を作成中..." : "新しく部屋を作る（ホスト）"}
     </button>

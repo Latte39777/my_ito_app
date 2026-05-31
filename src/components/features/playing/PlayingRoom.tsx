@@ -7,7 +7,7 @@ import { MyCardBox } from "./MyCardBox";
 import { AnswerInputBox } from "./AnswerInputBox";
 import { AnswersBoard } from "./AnswersBoard";
 import { ParticipantList } from "@/components/shared/ParticipantList";
-import { GameActionButtons } from "./GameActionButtons"; // 💡 さっき作ったやつ！
+import { GameActionButtons } from "./GameActionButtons";
 import { usePlayingRoomActions } from "@/app/hooks/usePlayingRoomActions";
 
 interface PlayingRoomProps {
@@ -34,8 +34,8 @@ export function PlayingRoom({
   const actions = usePlayingRoomActions(room, myPlayer, isHost);
 
   return (
-    <div className="mx-auto flex h-full w-full max-w-[1500px] flex-col gap-1 p-4 md:p-8">
-      <div className="font-hana relative mb-4 flex flex-wrap items-center justify-between gap-y-3 font-bold text-black md:flex-nowrap">
+    <div className="mx-auto flex h-full w-full max-w-[1500px] flex-col gap-1 p-4 md:p-4">
+      <div className="font-hana relative mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-3 pr-16 font-bold text-black md:pr-26">
         <h2 className="shrink-0 text-3xl tracking-wider md:text-4xl">
           第{roundNumber}回
         </h2>
@@ -53,7 +53,7 @@ export function PlayingRoom({
 
       <div className="flex flex-col gap-6 md:flex-row">
         {/* 左カラム */}
-        <div className="flex flex-1 flex-col gap-10">
+        <div className="flex min-w-0 flex-1 flex-col gap-10">
           <ThemeBox
             theme={room.current_theme}
             isHost={isHost}
@@ -80,7 +80,8 @@ export function PlayingRoom({
         </div>
 
         {/* 右カラム */}
-        <div className="flex w-full shrink-0 flex-col gap-8 md:w-[280px]">
+        {/* 🌟 修正3: md:w-[220px] にして中画面ではスリム化。lg:w-[280px] で大画面は元のサイズに */}
+        <div className="flex w-full shrink-0 flex-col gap-8 md:w-[220px] lg:w-[280px]">
           <LifeBox
             life={room.life}
             isHost={isHost}

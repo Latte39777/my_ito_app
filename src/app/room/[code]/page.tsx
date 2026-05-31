@@ -6,6 +6,7 @@ import { WaitingRoom } from "@/components/features/waiting/WaitingRoom";
 import { PlayingRoom } from "@/components/features/playing/PlayingRoom";
 import { SettingsButton } from "@/components/shared/SettingsButton";
 import { useRoom } from "@/app/hooks/useRoom";
+import { RulesModal } from "@/components/shared/RulesModal";
 
 export default function RoomPage() {
   const params = useParams();
@@ -35,18 +36,27 @@ export default function RoomPage() {
   if (!room) return null;
 
   const myPlayer = players.find((p) => p.id === myPlayerId);
+  console.log("--- デバッグ情報 ---");
+  console.log("myPlayerId (Local):", myPlayerId);
+  console.log("players (DB):", players);
+  console.log("myPlayer (Found):", myPlayer);
+
   const isHost = myPlayer?.isHost || false;
 
   return (
     <AnimatedBackground>
-      {/* 設定ボタン */}
-      {myPlayer && (
-        <SettingsButton
-          roomCode={room.room_code}
-          myPlayerId={myPlayer.id}
-          currentName={myPlayer.name}
-        />
-      )}
+      <div className="absolute top-4 right-4 z-50 flex items-center gap-2">
+        {/* ルールモーダル */}
+        <RulesModal />
+        {myPlayer && (
+          // 設定ボタンはプレイヤー情報がある場合にのみ表示
+          <SettingsButton
+            roomCode={room.room_code}
+            myPlayerId={myPlayer.id}
+            currentName={myPlayer.name}
+          />
+        )}
+      </div>
 
       {/* 待機室 */}
       {room.status === "waiting" && (

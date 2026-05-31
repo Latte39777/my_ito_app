@@ -1,4 +1,4 @@
-import { Theme } from "@/types/schema";
+import { Theme, roomSchema, themeSchema } from "@/types/schema";
 import { updateRoomAtomic } from "./dbUtils";
 import {
   createShuffledDeck,
@@ -12,6 +12,8 @@ export const advanceToNextRound = async (
   roomCode: string,
   nextTheme: Theme,
 ) => {
+  const parsedTheme = themeSchema.parse(nextTheme);
+
   await updateRoomAtomic(roomCode, (room) => {
     const freshDeck = createShuffledDeck();
     // 全プレイヤーの状態をリセットして新しいデッキを配る
@@ -21,11 +23,17 @@ export const advanceToNextRound = async (
       freshDeck,
     );
 
+    const parsedPlayers = roomSchema.shape.players.parse(updatedPlayers);
+    const parsedDeck = roomSchema.shape.deck.parse(remainingDeck);
+    const parsedRoundNumber = roomSchema.shape.round_number.parse(
+      (room.round_number || 1) + 1,
+    );
+
     return {
-      round_number: (room.round_number || 1) + 1,
-      current_theme: nextTheme,
-      players: updatedPlayers,
-      deck: remainingDeck,
+      round_number: parsedRoundNumber,
+      current_theme: parsedTheme,
+      players: parsedPlayers,
+      deck: parsedDeck,
     };
   });
 };
@@ -39,11 +47,15 @@ export const startGame = async (roomCode: string) => {
       freshDeck,
     );
 
+    const parsedPlayers = roomSchema.shape.players.parse(updatedPlayers);
+    const parsedDeck = roomSchema.shape.deck.parse(remainingDeck);
+    const parsedRoundNumber = roomSchema.shape.round_number.parse(1);
+
     return {
       status: "playing",
-      round_number: 1,
-      players: updatedPlayers,
-      deck: remainingDeck,
+      round_number: parsedRoundNumber,
+      players: parsedPlayers,
+      deck: parsedDeck,
     };
   });
 };
@@ -72,14 +84,18 @@ export const kickPlayer = async (roomCode: string, targetId: string) => {
 
 // お題を変更する
 export const updateTheme = async (roomCode: string, newTheme: Theme) => {
+  const parsedTheme = themeSchema.parse(newTheme);
+
   await updateRoomAtomic(roomCode, () => {
-    return { current_theme: newTheme };
+    return { current_theme: parsedTheme };
   });
 };
 
 // ライフを更新する
 export const updateRoomLife = async (roomCode: string, newLife: number) => {
+  const parsedLife = roomSchema.shape.life.parse(newLife);
+
   await updateRoomAtomic(roomCode, () => {
-    return { life: newLife };
+    return { life: parsedLife };
   });
 };

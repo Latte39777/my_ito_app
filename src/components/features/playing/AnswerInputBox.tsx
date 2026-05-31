@@ -18,8 +18,10 @@ export function AnswerInputBox({
   const [text, setText] = useState(player.answerText || "");
 
   const handleSubmit = () => {
-    if (!text.trim() || isProcessing) return;
-    onSubmitAnswer(text);
+    const trimmedText = text.trim();
+    if (!trimmedText || isProcessing) return;
+    onSubmitAnswer(trimmedText);
+    setText(trimmedText);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -30,11 +32,11 @@ export function AnswerInputBox({
   };
 
   return (
-    <div className="mx-auto mt-4 flex w-full max-w-[1000px] flex-col gap-8">
+    <div className="ito-wide-container flex flex-col gap-8">
       <div className="ito-box flex flex-col overflow-hidden">
         {/* 上部：プレイヤー情報 */}
         <div className="flex items-center justify-between gap-4 border-b-2 border-gray-100 bg-white p-2 px-4">
-          <PlayerInfo player={player} isMe={true} size="md" />
+          <PlayerInfo player={player} isMe={true} isSmall={false} />
           <span className="shrink-0 text-[10px] font-bold text-gray-400">
             回答の入力
           </span>

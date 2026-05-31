@@ -24,11 +24,12 @@ export function FreeThemeModal({ onClose, onSave }: FreeThemeModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4">
-      <div className="animate-fade-in flex w-full max-w-sm flex-col gap-4 rounded-2xl bg-white p-6 shadow-2xl">
-        <h2 className="border-b-2 border-gray-100 pb-2 text-2xl font-black text-black">
-          フリーお題作成
-        </h2>
+    <div className="ito-modal-backdrop" onClick={onClose}>
+      <div
+        className="ito-modal-card max-w-sm gap-4"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <h2 className="ito-modal-title">フリーお題作成</h2>
 
         <div className="flex flex-col gap-1">
           <label className="text-xs font-bold text-gray-500">お題</label>
@@ -36,7 +37,8 @@ export function FreeThemeModal({ onClose, onSave }: FreeThemeModalProps) {
             type="text"
             value={customTitle}
             onChange={(e) => setCustomTitle(e.target.value)}
-            className="w-full rounded-lg border-2 border-gray-200 p-2 text-lg font-bold text-black transition-colors focus:border-blue-500 focus:outline-none"
+            maxLength={30}
+            className="ito-modal-input p-2 text-lg"
             placeholder="例：好きなアニメは？"
           />
         </div>
@@ -50,7 +52,8 @@ export function FreeThemeModal({ onClose, onSave }: FreeThemeModalProps) {
               type="text"
               value={customLow}
               onChange={(e) => setCustomLow(e.target.value)}
-              className="w-full rounded-lg border-2 border-gray-200 p-2 text-lg font-bold text-black transition-colors focus:border-blue-500 focus:outline-none"
+              maxLength={15}
+              className="ito-modal-input p-2 text-lg"
               placeholder="例：おもしろくない"
             />
           </div>
@@ -62,7 +65,8 @@ export function FreeThemeModal({ onClose, onSave }: FreeThemeModalProps) {
               type="text"
               value={customHigh}
               onChange={(e) => setCustomHigh(e.target.value)}
-              className="w-full rounded-lg border-2 border-gray-200 p-2 text-lg font-bold text-black transition-colors focus:border-blue-500 focus:outline-none"
+              maxLength={15}
+              className="ito-modal-input p-2 text-lg"
               placeholder="例：神アニメ"
             />
           </div>
@@ -71,7 +75,7 @@ export function FreeThemeModal({ onClose, onSave }: FreeThemeModalProps) {
         <div className="mt-3 flex justify-end gap-3">
           <button
             onClick={onClose}
-            className="rounded-lg px-5 py-2 font-bold text-gray-500 transition-colors hover:bg-gray-100"
+            className="ito-modal-btn-secondary px-5 py-2"
           >
             キャンセル
           </button>
@@ -80,7 +84,7 @@ export function FreeThemeModal({ onClose, onSave }: FreeThemeModalProps) {
             disabled={
               !customTitle.trim() || !customLow.trim() || !customHigh.trim()
             }
-            className="rounded-lg bg-blue-500 px-5 py-2 font-bold text-white transition-colors hover:bg-blue-600 disabled:opacity-50"
+            className="ito-modal-btn-primary px-5 py-2"
           >
             作成する
           </button>

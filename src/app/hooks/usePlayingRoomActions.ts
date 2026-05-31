@@ -1,4 +1,3 @@
-// src/hooks/usePlayingRoomActions.ts
 import { useState } from "react";
 import { Theme, Room, Player } from "@/types/schema";
 import { THEMES_LIST } from "@/data/themes";
