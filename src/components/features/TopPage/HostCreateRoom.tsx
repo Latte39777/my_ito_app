@@ -21,7 +21,6 @@ export function HostCreateRoom({ userName, iconId }: HostCreateRoomProps) {
       return;
     }
 
-    // クールダウン対策
     const lastCreatedStr = localStorage.getItem("ito_last_created_at");
     if (lastCreatedStr) {
       const lastCreated = parseInt(lastCreatedStr, 10);
@@ -39,7 +38,6 @@ export function HostCreateRoom({ userName, iconId }: HostCreateRoomProps) {
 
     setLoading(true);
     try {
-      // リストの中からランダムに1つお題を選ぶ
       const randomIndex = Math.floor(Math.random() * THEMES_LIST.length);
       const randomTheme = THEMES_LIST[randomIndex];
 
@@ -49,7 +47,6 @@ export function HostCreateRoom({ userName, iconId }: HostCreateRoomProps) {
         randomTheme,
       );
 
-      // 部屋の作成に成功したら、現在時刻をローカルストレージに保存
       localStorage.setItem("ito_last_created_at", Date.now().toString());
 
       router.push(`/room/${roomCode}?hostId=${hostId}`);

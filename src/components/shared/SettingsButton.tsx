@@ -52,7 +52,7 @@ export function SettingsButton({
         <TbSettingsFilled size={24} className="text-gray-700" />
       </button>
 
-      {/* モーダル背景と中身 */}
+      
       {isOpen && (
         <div className="ito-modal-backdrop" onClick={handleBackdropClick}>
           <div

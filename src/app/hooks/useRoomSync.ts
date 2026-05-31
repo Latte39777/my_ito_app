@@ -12,7 +12,6 @@ export function useRoomSync(roomCode: string) {
   const [myPlayerId, setMyPlayerId] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
-  // 初期データの取得と参加処理
   useEffect(() => {
     if (!roomCode) return;
 
@@ -91,7 +90,6 @@ export function useRoomSync(roomCode: string) {
     initRoom();
   }, [roomCode, searchParams, router]);
 
-  // Supabase リアルタイム購読
   useEffect(() => {
     if (!roomCode) return;
 

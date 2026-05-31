@@ -23,9 +23,8 @@ export function MyCardBox({
   const isLoading = loadingAction === "openCard";
 
   return (
-    // 💡 修正1: スマホ用の min-h を 250px から 160px まで一気に縮め、内側の余白(p)も p-2 に減らしました
     <div className="ito-box flex h-full min-h-[160px] w-full flex-col items-center p-2 md:min-h-[270px] md:p-4 lg:min-h-[300px] lg:p-5">
-      {/* 💡 修正2: `hidden md:block` を追加し、スマホでは完全に消し去ります */}
+      
       <span className="mb-3 hidden text-xs font-bold tracking-widest text-black md:mb-4 md:block md:text-sm lg:text-sm">
         あなたの数字
       </span>

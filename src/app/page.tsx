@@ -10,18 +10,17 @@ import { FooterLinks } from "@/components/shared/FooterLinks";
 import { useAutoResume } from "@/app/hooks/useAutoResume";
 
 export default function TopPage() {
-  // useAutoResume();
   const { userName, setUserName, selectedIconId, setSelectedIconId } =
     useUserSetup();
 
   return (
     <AnimatedBackground>
-      {/* 💡 右上のルール説明ボタン */}
+      
       <div className="absolute top-4 right-4 z-50">
         <RulesModal />
       </div>
 
-      {/* スクロールできるように py-10 などで上下の余白を取るとスマホでも綺麗です */}
+      
       <div className="ito-narrow-container min-h-screen justify-center py-10">
         <h1 className="font-kei mb-10 text-4xl font-black tracking-[2px] text-black md:text-5xl">
           ナンバートーク
@@ -39,12 +38,12 @@ export default function TopPage() {
             />
           </div>
 
-          {/* ホスト（部屋作成）とゲスト（部屋参加）のセクション */}
+          
           <HostCreateRoom userName={userName} iconId={selectedIconId} />
           <GuestJoinForm userName={userName} iconId={selectedIconId} />
         </div>
 
-        {/* 💡 フッターリンク（GitHub / お問い合わせ） */}
+        
         <FooterLinks />
       </div>
     </AnimatedBackground>

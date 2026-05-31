@@ -56,7 +56,6 @@ export function usePlayingRoomActions(
     }
   };
 
-  // 💡 UI側(モーダル)から新しい回答テキストを直接受け取るように修正（promptを削除）
   const handleEditAnswer = async (newAnswer: string) => {
     if (!newAnswer || newAnswer.trim() === "") return;
 
@@ -86,7 +85,6 @@ export function usePlayingRoomActions(
   };
 
   const handleNextRound = async () => {
-    // 💡 confirmを削除！ボタン側で確認済みなので即実行します
     if (isProcessing) return;
     setLoadingAction("nextRound");
     try {

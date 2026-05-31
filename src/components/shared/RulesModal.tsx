@@ -12,7 +12,7 @@ export function RulesModal() {
 
   return (
     <>
-      {/* 右上の「？」ボタン */}
+      
       <button
         onClick={() => setIsOpen(true)}
         className="ito-box flex h-8 w-8 items-center justify-center text-xl transition-transform md:h-10 md:w-10"
@@ -21,7 +21,7 @@ export function RulesModal() {
         <TbHelpCircleFilled size={24} />
       </button>
 
-      {/* モーダル本体 */}
+      
       {isOpen && (
         <div className="ito-modal-backdrop" onClick={handleBackdropClick}>
           <div

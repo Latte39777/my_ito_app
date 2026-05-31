@@ -22,17 +22,14 @@ export function PlayerInfo({
     AVAILABLE_ICONS.find((i) => i.id === player.icon) || AVAILABLE_ICONS[0];
   const IconComponent = iconData.Icon;
 
-  // 💡 修正1: アイコンのベースサイズ(スマホ用)を小さく
   const iconClass = isSmall
     ? "text-[14px] md:text-[18px] lg:text-[20px]"
     : "text-[20px] md:text-[28px] lg:text-[30px]";
 
-  // 💡 修正2: 名前の文字サイズをスマホ用に小さく (text-sm -> text-xs, text-lg -> text-base)
   const textClass = isSmall
     ? "text-xs md:text-base lg:text-lg"
     : "text-base md:text-xl lg:text-2xl";
 
-  // 💡 修正3: タグの文字サイズも極限まで小さく
   const tagClass = isSmall
     ? "text-[10px] md:text-[14px] lg:text-[16px]"
     : "text-[8px] md:text-[10px] lg:text-[11px] leading-none";
@@ -92,7 +89,6 @@ export function PlayerInfo({
   );
 
   return (
-    // 💡 修正5: 全体のアイコンと文字の隙間(gap)もスマホ時は狭く(gap-1)
     <div className="flex w-full flex-grow items-center gap-1 md:gap-1.5 lg:gap-2">
       <div
         className={`flex shrink-0 items-center justify-center ${iconClass} ${iconData.color}`}

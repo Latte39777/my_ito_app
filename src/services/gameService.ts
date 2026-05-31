@@ -6,8 +6,6 @@ import {
 } from "@/lib/gameLogic";
 import { supabase } from "@/lib/supabase";
 
-// Hostによるゲーム進行管理の関数群
-// 次のラウンドへ進む
 export const advanceToNextRound = async (
   roomCode: string,
   nextTheme: Theme,
@@ -16,8 +14,6 @@ export const advanceToNextRound = async (
 
   await updateRoomAtomic(roomCode, (room) => {
     const freshDeck = createShuffledDeck();
-    // 全プレイヤーの状態をリセットして新しいデッキを配る
-    // 観戦者を解除して全員参加状態にするはresetAllPlayersForNextRoundの中で行う
     const { updatedPlayers, remainingDeck } = resetAllPlayersForNextRound(
       room.players,
       freshDeck,
@@ -38,7 +34,6 @@ export const advanceToNextRound = async (
   });
 };
 
-// ゲームを開始する
 export const startGame = async (roomCode: string) => {
   await updateRoomAtomic(roomCode, (room) => {
     const freshDeck = createShuffledDeck();
@@ -60,7 +55,6 @@ export const startGame = async (roomCode: string) => {
   });
 };
 
-// ゲームを終了する
 export const endGame = async (roomCode: string) => {
   const { error } = await supabase
     .from("rooms")
@@ -74,7 +68,6 @@ export const endGame = async (roomCode: string) => {
   }
 };
 
-// プレイヤーをキックする
 export const kickPlayer = async (roomCode: string, targetId: string) => {
   await updateRoomAtomic(roomCode, (room) => {
     const players = room.players.filter((p) => p.id !== targetId);
@@ -82,7 +75,6 @@ export const kickPlayer = async (roomCode: string, targetId: string) => {
   });
 };
 
-// お題を変更する
 export const updateTheme = async (roomCode: string, newTheme: Theme) => {
   const parsedTheme = themeSchema.parse(newTheme);
 
@@ -91,7 +83,6 @@ export const updateTheme = async (roomCode: string, newTheme: Theme) => {
   });
 };
 
-// ライフを更新する
 export const updateRoomLife = async (roomCode: string, newLife: number) => {
   const parsedLife = roomSchema.shape.life.parse(newLife);
 

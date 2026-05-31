@@ -1,5 +1,4 @@
 export const THEMES_LIST = [
-  // ▼ 定番・日常・価値観
   {
     id: 1,
     title: "好きな食べ物",
@@ -151,7 +150,6 @@ export const THEMES_LIST = [
     high: "誘われたら5秒で家出る",
   },
 
-  // ▼ 食・グルメ
   {
     id: 31,
     title: "ご飯のお供",
@@ -263,7 +261,6 @@ export const THEMES_LIST = [
     high: "美味しくいただける",
   },
 
-  // ▼ 学校・仕事・IT・創作
   {
     id: 51,
     title: "プログラミング言語の難易度",
@@ -385,7 +382,6 @@ export const THEMES_LIST = [
     high: "一生かかっても終わらない",
   },
 
-  // ▼ 趣味・エンタメ・カルチャー
   {
     id: 71,
     title: "カラオケで盛り上がる曲",
@@ -507,7 +503,6 @@ export const THEMES_LIST = [
     high: "プロのカメラマンレベル",
   },
 
-  // ▼ 恋愛・人間関係
   {
     id: 91,
     title: "恋人に求める条件",
@@ -624,7 +619,6 @@ export const THEMES_LIST = [
     high: "奥さんに頭が上がらない",
   },
 
-  // ▼ センス・能力・もしも
   {
     id: 111,
     title: "ゾンビに勝てそうな武器",
@@ -736,7 +730,6 @@ export const THEMES_LIST = [
     high: "黒幕として生き残る",
   },
 
-  // ▼ 日常の「あるある」・ピンチ系
   {
     id: 131,
     title: "スマホの充電残量ヤバい度",
@@ -853,7 +846,6 @@ export const THEMES_LIST = [
     high: "オリンピック代表",
   },
 
-  // ▼ モノ・評価系
   {
     id: 151,
     title: "100均で買ってよかったもの",
@@ -905,7 +897,6 @@ export const THEMES_LIST = [
   },
   { id: 160, title: "好きなきのこ", low: "毒キノコ", high: "秋の味覚の王様" },
 
-  // ▼ マニアック・その他
   {
     id: 161,
     title: "自分の黒歴史",

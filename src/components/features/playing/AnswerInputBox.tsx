@@ -34,7 +34,7 @@ export function AnswerInputBox({
   return (
     <div className="ito-wide-container flex flex-col gap-3 md:gap-8">
       <div className="ito-box flex flex-col overflow-hidden">
-        {/* 上部：プレイヤー情報 */}
+        
         <div className="flex items-center justify-between gap-4 border-b-2 border-gray-100 bg-white p-2 px-4">
           <PlayerInfo player={player} isMe={true} isSmall={false} />
           <span className="shrink-0 text-[10px] font-bold text-gray-400">
@@ -42,7 +42,7 @@ export function AnswerInputBox({
           </span>
         </div>
 
-        {/* 下部：入力フィールド */}
+        
         <div className="bg-white p-6">
           <input
             type="text"

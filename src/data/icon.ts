@@ -135,7 +135,7 @@ export const AVAILABLE_ICONS = [
     color: "text-yellow-400",
     label: "カミナリ",
   },
-  { id: "bomb", Icon: TbBombFilled, color: "text-slate-800", label: "爆弾" }, // 爆弾は真っ黒が映える
+  { id: "bomb", Icon: TbBombFilled, color: "text-slate-800", label: "爆弾" }, 
   { id: "bone", Icon: TbBoneFilled, color: "text-gray-400", label: "ほね" },
   {
     id: "campfire",
@@ -180,7 +180,7 @@ export const AVAILABLE_ICONS = [
     Icon: TbSpiderFilled,
     color: "text-purple-700",
     label: "クモ",
-  }, // ちょっと毒々しい紫
+  }, 
   {
     id: "umbrella",
     Icon: TbUmbrellaFilled,

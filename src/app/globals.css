@@ -116,7 +116,7 @@
     animation: var(--animate-gradient);
   }
 
-  /* ② 手前のレイヤー（柄のフェード） */
+  
   .pattern-auto-dots {
     background-image: radial-gradient(rgba(0, 0, 0, 0.08) 2px, transparent 2px);
     background-size: 20px 20px;

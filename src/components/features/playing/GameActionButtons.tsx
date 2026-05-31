@@ -18,8 +18,6 @@ export function GameActionButtons({
   onLeaveRoom,
 }: GameActionButtonsProps) {
   return (
-    // 💡 修正3: スマホ時は `flex-row-reverse` を使い、HTMLの順番を変えずに右に「次へ」、左に「やめる」を配置！
-    // md(中画面)以上では `md:flex-col` になり、今まで通り縦に並びます。
     <div className="flex flex-row-reverse items-center gap-3 md:flex-col md:items-stretch md:gap-2.5 lg:gap-3">
       {isHost && (
         <div className="flex-1">

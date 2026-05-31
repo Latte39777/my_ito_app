@@ -11,7 +11,6 @@ export const createRoom = async (
   const roomCode = Math.random().toString(36).substring(2, 6).toUpperCase();
   const hostPlayerId = crypto.randomUUID();
 
-  // ホストプレイヤーの初期データを作成
   const hostPlayer = {
     id: hostPlayerId,
     name: hostName,
@@ -24,7 +23,6 @@ export const createRoom = async (
     isSpectating: false,
   };
 
-  // 部屋の初期データを作成
   const rawRoomData = {
     room_code: roomCode,
     status: "waiting" as const,
@@ -35,11 +33,9 @@ export const createRoom = async (
     round_started_at: null,
   };
 
-  // Zodでデータのバリデーションを行う
   const parsed = roomSchema.safeParse(rawRoomData);
   if (!parsed.success) throw new Error("初期データが不正です");
 
-  // Supabaseに部屋のデータを保存
   const { error } = await supabase.from("rooms").insert(parsed.data);
   if (error) throw new Error(`部屋の作成に失敗しました: ${error.message}`);
 

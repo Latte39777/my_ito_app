@@ -6,7 +6,7 @@ export function FooterLinks() {
   return (
     <div className="mt-10 flex w-full flex-col items-center justify-center gap-4 text-sm font-bold text-black">
       <a
-        href="https://docs.google.com/forms/d/e/1FAIpQLSfirAl6aWEsnaOoo2AFaYjSuFFgUYDYMkdMIq8W8bvoZg0X3w/viewform?usp=publish-editor" // 💡 ここにGoogleフォームのURLを入れる
+        href="https://docs.google.com/forms/d/e/1FAIpQLSfirAl6aWEsnaOoo2AFaYjSuFFgUYDYMkdMIq8W8bvoZg0X3w/viewform?usp=publish-editor" 
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-1 transition-colors hover:text-white"
