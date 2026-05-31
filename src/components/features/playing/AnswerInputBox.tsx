@@ -32,7 +32,7 @@ export function AnswerInputBox({
   };
 
   return (
-    <div className="ito-wide-container flex flex-col gap-8">
+    <div className="ito-wide-container flex flex-col gap-3 md:gap-8">
       <div className="ito-box flex flex-col overflow-hidden">
         {/* 上部：プレイヤー情報 */}
         <div className="flex items-center justify-between gap-4 border-b-2 border-gray-100 bg-white p-2 px-4">
