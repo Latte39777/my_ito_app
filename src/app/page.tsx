@@ -7,7 +7,7 @@ import { UserSetupForm } from "@/components/features/TopPage/UserSetupForm";
 import { useUserSetup } from "@/app/hooks/useUserSetup";
 import { RulesModal } from "@/components/shared/RulesModal";
 import { FooterLinks } from "@/components/shared/FooterLinks";
-import { useAutoResume } from "@/app/hooks/useAutoResume";
+// import { useAutoResume } from "@/app/hooks/useAutoResume";
 
 export default function TopPage() {
   const { userName, setUserName, selectedIconId, setSelectedIconId } =
@@ -15,12 +15,10 @@ export default function TopPage() {
 
   return (
     <AnimatedBackground>
-      
       <div className="absolute top-4 right-4 z-50">
         <RulesModal />
       </div>
 
-      
       <div className="ito-narrow-container min-h-screen justify-center py-10">
         <h1 className="font-kei mb-10 text-4xl font-black tracking-[2px] text-black md:text-5xl">
           ナンバートーク
@@ -38,12 +36,10 @@ export default function TopPage() {
             />
           </div>
 
-          
           <HostCreateRoom userName={userName} iconId={selectedIconId} />
           <GuestJoinForm userName={userName} iconId={selectedIconId} />
         </div>
 
-        
         <FooterLinks />
       </div>
     </AnimatedBackground>
