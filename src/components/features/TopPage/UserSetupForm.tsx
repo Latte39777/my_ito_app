@@ -18,7 +18,7 @@ export function UserSetupForm({
         onChange={(e) => setUserName(e.target.value)}
         onBlur={(e) => setUserName(e.target.value.trim())}
         maxLength={12}
-        className="ito-input px-3 py-2 text-xl"
+        className="ito-input w-full px-3 py-2 text-xl"
         placeholder="あなたの名前"
       />
       <div className="mb-1 shrink-0">

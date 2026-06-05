@@ -16,7 +16,7 @@ export function AnswersBoard({
   const playingPlayers = players.filter((p) => !p.isSpectating);
 
   return (
-    <div className="ito-wide-container">
+    <div className="mx-auto mt-4 w-full max-w-[1000px]">
       <div className="grid grid-cols-1 gap-2 md:gap-4 lg:grid-cols-2">
         {playingPlayers.map((p) => (
           <AnswerCard

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { THEMES_LIST } from "@/data/themes";
 import { Theme } from "@/types/schema";
+import { cn } from "@/lib/utils";
 import { FreeThemeModal } from "./FreeThemeModal";
 
 interface ThemeBoxProps {
@@ -51,20 +52,26 @@ export function ThemeBox({
             <button
               onClick={handleRandomTheme}
               disabled={isProcessing}
-              className={`text-gray-400 transition-colors hover:text-black ${loadingAction === "theme" ? "cursor-not-allowed opacity-50" : ""}`}
+              className={cn(
+                "text-gray-400 transition-colors hover:text-black",
+                loadingAction === "theme" && "cursor-not-allowed opacity-50",
+              )}
             >
               お題変更
             </button>
             <button
               onClick={() => setIsOpen(true)}
               disabled={isProcessing}
-              className={`text-gray-400 transition-colors hover:text-black ${loadingAction === "theme" ? "cursor-not-allowed opacity-50" : ""}`}
+              className={cn(
+                "text-gray-400 transition-colors hover:text-black",
+                loadingAction === "theme" && "cursor-not-allowed opacity-50",
+              )}
             >
               フリーお題
             </button>
           </div>
         )}
-        <div className="ito-speech-tail"></div>
+        <div className="absolute -bottom-[10px] left-8 h-5 w-5 rotate-45 border-black bg-white shadow-[2px_3px_0_0_rgba(0,0,0,1)] md:shadow-[4px_5px_0_0_rgba(0,0,0,1)]"></div>
       </div>
 
       {isOpen && (

@@ -21,7 +21,7 @@ export default function TopPage() {
       </div>
 
       
-      <div className="ito-narrow-container min-h-screen justify-center py-10">
+      <div className="mx-auto flex min-h-screen w-full max-w-[400px] flex-1 flex-col items-center justify-center p-5 py-10">
         <h1 className="font-kei mb-10 text-4xl font-black tracking-[2px] text-black md:text-5xl">
           ナンバートーク
         </h1>

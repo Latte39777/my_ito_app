@@ -21,9 +21,12 @@ export function EditAnswerModal({
   };
 
   return (
-    <div className="ito-modal-backdrop" onClick={onClose}>
+    <div
+      className="ito-modal-backdrop fixed inset-0 z-[100] flex items-center justify-center px-4"
+      onClick={onClose}
+    >
       <div
-        className="ito-modal-card max-w-sm gap-5"
+        className="ito-modal-card flex w-full max-w-sm flex-col gap-5 p-6"
         onClick={(event) => event.stopPropagation()}
       >
         <h2 className="ito-modal-title">回答の変更</h2>
@@ -33,7 +36,7 @@ export function EditAnswerModal({
             maxLength={30}
             value={editText}
             onChange={(e) => setEditText(e.target.value)}
-            className="ito-modal-input p-3 text-xl"
+            className="ito-modal-input w-full p-3 text-xl"
             placeholder="新しい回答"
           />
         </div>

@@ -32,7 +32,7 @@ export function AnswerInputBox({
   };
 
   return (
-    <div className="ito-wide-container flex flex-col gap-3 md:gap-8">
+    <div className="mx-auto mt-4 flex w-full max-w-[1000px] flex-col gap-3 md:gap-8">
       <div className="ito-box flex flex-col overflow-hidden">
         
         <div className="flex items-center justify-between gap-4 border-b-2 border-gray-100 bg-white p-2 px-4">
@@ -60,7 +60,7 @@ export function AnswerInputBox({
       <button
         onClick={handleSubmit}
         disabled={!text.trim() || isProcessing}
-        className="ito-btn ito-btn-primary px-4 py-4 transition-all disabled:cursor-not-allowed disabled:opacity-50"
+        className="ito-btn ito-btn-primary flex w-full items-center justify-center gap-2 px-4 py-4 transition-all disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isProcessing ? "送信中..." : "回答を送信"}
       </button>

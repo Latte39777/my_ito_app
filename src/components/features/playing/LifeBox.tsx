@@ -1,6 +1,7 @@
 "use client";
 
 import { TbHeartFilled, TbPlus, TbMinus } from "react-icons/tb";
+import { cn } from "@/lib/utils";
 
 interface LifeBoxProps {
   life: number;
@@ -31,14 +32,20 @@ export function LifeBox({
           <button
             onClick={() => onChangeLife?.(life + 1)}
             disabled={isProcessing}
-            className={`rounded p-0.5 text-lg font-black text-black transition-colors hover:bg-gray-200 md:p-1 md:text-xl ${loadingAction === "life" ? "cursor-not-allowed opacity-50" : ""}`}
+            className={cn(
+              "rounded p-0.5 text-lg font-black text-black transition-colors hover:bg-gray-200 md:p-1 md:text-xl",
+              loadingAction === "life" && "cursor-not-allowed opacity-50",
+            )}
           >
             <TbPlus />
           </button>
           <button
             onClick={() => onChangeLife?.(life - 1)}
             disabled={isProcessing}
-            className={`rounded p-0.5 text-lg font-black text-black transition-colors hover:bg-gray-200 md:p-1 md:text-xl ${loadingAction === "life" ? "cursor-not-allowed opacity-50" : ""}`}
+            className={cn(
+              "rounded p-0.5 text-lg font-black text-black transition-colors hover:bg-gray-200 md:p-1 md:text-xl",
+              loadingAction === "life" && "cursor-not-allowed opacity-50",
+            )}
           >
             <TbMinus />
           </button>

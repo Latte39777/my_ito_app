@@ -1,6 +1,7 @@
 "use client";
 
 import { ConfirmButton } from "@/components/shared/ConfirmButton";
+import { cn } from "@/lib/utils";
 
 interface GameActionButtonsProps {
   isHost: boolean;
@@ -27,11 +28,13 @@ export function GameActionButtons({
               loadingAction === "nextRound" ? "処理中..." : "つぎのお題"
             }
             confirmText="本当に次へ進む？"
-            baseClassName={`ito-btn ito-btn-primary w-full py-2.5 text-sm md:py-2.5 md:text-base lg:py-3 ${
-              loadingAction === "nextRound"
-                ? "opacity-50 cursor-not-allowed"
-                : ""
-            } ${isProcessing && loadingAction !== "nextRound" ? "cursor-not-allowed" : ""}`}
+            baseClassName={cn(
+              "ito-btn ito-btn-primary flex w-full items-center justify-center gap-2 py-2.5 text-sm md:py-2.5 md:text-base lg:py-3",
+              loadingAction === "nextRound" && "cursor-not-allowed opacity-50",
+              isProcessing &&
+                loadingAction !== "nextRound" &&
+                "cursor-not-allowed",
+            )}
             confirmClassName="!bg-blue-700"
             disabled={isProcessing}
           />
@@ -43,9 +46,10 @@ export function GameActionButtons({
           onConfirm={onLeaveRoom}
           defaultText="やめる"
           confirmText="本当にやめる？"
-          baseClassName={`ito-btn ito-btn-outline w-full py-1 text-sm md:text-base  ${
-            isProcessing ? "cursor-not-allowed" : ""
-          }`}
+          baseClassName={cn(
+            "ito-btn ito-btn-outline flex w-full items-center justify-center gap-2 py-1 text-sm md:text-base",
+            isProcessing && "cursor-not-allowed",
+          )}
           confirmClassName="!bg-red-500 !text-white !border-black"
           disabled={isProcessing}
         />

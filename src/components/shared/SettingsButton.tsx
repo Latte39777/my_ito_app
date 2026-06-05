@@ -54,9 +54,12 @@ export function SettingsButton({
 
       
       {isOpen && (
-        <div className="ito-modal-backdrop" onClick={handleBackdropClick}>
+        <div
+          className="ito-modal-backdrop fixed inset-0 z-[100] flex items-center justify-center px-4"
+          onClick={handleBackdropClick}
+        >
           <div
-            className="ito-modal-card max-w-sm gap-5"
+            className="ito-modal-card flex w-full max-w-sm flex-col gap-5 p-6"
             onClick={(event) => event.stopPropagation()}
           >
             <h2 className="ito-modal-title">設定</h2>
@@ -70,7 +73,7 @@ export function SettingsButton({
                 maxLength={12}
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
-                className="ito-modal-input p-3 text-xl"
+                className="ito-modal-input w-full p-3 text-xl"
                 placeholder="新しい名前"
               />
             </div>

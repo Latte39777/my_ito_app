@@ -30,7 +30,10 @@ export function RoomInfoAndShare({ roomCode }: RoomInfoAndShareProps) {
           {typeof window !== "undefined" ? window.location.href : "https://..."}
         </div>
 
-        <button onClick={handleCopyUrl} className="ito-btn ito-btn-dark w-full">
+        <button
+          onClick={handleCopyUrl}
+          className="ito-btn ito-btn-dark flex w-full items-center justify-center gap-2"
+        >
           {copied ? "コピーしました！" : "URLをコピー"}
         </button>
       </div>

@@ -60,13 +60,13 @@ export function GuestJoinForm({ userName, iconId }: GuestJoinFormProps) {
         value={roomCode}
         onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
         placeholder="4桁の部屋コード"
-        className="ito-input text-2xl"
+        className="ito-input w-full text-2xl"
       />
 
       <button
         onClick={handleJoin}
         disabled={loading || roomCode.length !== 4}
-        className="ito-btn ito-btn-dark cursor-pointer py-3 font-bold transition-opacity disabled:opacity-50"
+        className="ito-btn ito-btn-dark flex w-full items-center justify-center gap-2 py-3 font-bold transition-opacity disabled:opacity-50"
       >
         {loading ? "確認中..." : "参加する"}
       </button>

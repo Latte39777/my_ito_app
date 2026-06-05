@@ -2,6 +2,7 @@
 
 import { AVAILABLE_ICONS } from "@/data/icon";
 import { Player } from "@/types/schema";
+import { cn } from "@/lib/utils";
 import { TbCrown, TbUserFilled } from "react-icons/tb";
 import { PiEyesFill } from "react-icons/pi";
 
@@ -49,10 +50,16 @@ export function PlayerInfo({
       {player.isHost && (
         <div
           title="ホスト"
-          className={`flex items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors ${badgeWrapperClass}`}
+          className={cn(
+            "flex items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors",
+            badgeWrapperClass,
+          )}
         >
           <span
-            className={`font-hana flex items-center font-bold text-yellow-600 ${tagClass}`}
+            className={cn(
+              "font-hana flex items-center font-bold text-yellow-600",
+              tagClass,
+            )}
           >
             <TbCrown className={badgeIconClass} />
             {!hideBadgeText && "ホスト"}
@@ -62,10 +69,16 @@ export function PlayerInfo({
       {isMe && (
         <div
           title="あなた"
-          className={`flex items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors ${badgeWrapperClass}`}
+          className={cn(
+            "flex items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors",
+            badgeWrapperClass,
+          )}
         >
           <span
-            className={`font-hana flex items-center font-bold text-blue-600 ${tagClass}`}
+            className={cn(
+              "font-hana flex items-center font-bold text-blue-600",
+              tagClass,
+            )}
           >
             <TbUserFilled className={badgeIconClass} />
             {!hideBadgeText && "あなた"}
@@ -75,10 +88,16 @@ export function PlayerInfo({
       {player.isSpectating && (
         <div
           title="観戦中"
-          className={`flex items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors ${badgeWrapperClass}`}
+          className={cn(
+            "flex items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors",
+            badgeWrapperClass,
+          )}
         >
           <span
-            className={`font-hana flex items-center font-bold text-gray-500 ${tagClass}`}
+            className={cn(
+              "font-hana flex items-center font-bold text-gray-500",
+              tagClass,
+            )}
           >
             <PiEyesFill className={badgeIconClass} />
             {!hideBadgeText && "観戦中"}
@@ -90,17 +109,13 @@ export function PlayerInfo({
 
   return (
     <div className="flex w-full flex-grow items-center gap-1 md:gap-1.5 lg:gap-2">
-      <div
-        className={`flex shrink-0 items-center justify-center ${iconClass} ${iconData.color}`}
-      >
+      <div className={cn("flex shrink-0 items-center justify-center", iconClass, iconData.color)}>
         <IconComponent />
       </div>
 
       {isSmall ? (
         <>
-          <span
-            className={`font-hana min-w-0 flex-1 truncate font-bold text-black ${textClass}`}
-          >
+          <span className={cn("font-hana min-w-0 flex-1 truncate font-bold text-black", textClass)}>
             {player.name}
           </span>
           <div className="ml-auto flex shrink-0 items-center gap-0.5 md:gap-1">
@@ -119,7 +134,10 @@ export function PlayerInfo({
             </div>
           )}
           <span
-            className={`font-hana min-w-0 truncate leading-tight font-bold text-black ${textClass}`}
+            className={cn(
+              "font-hana min-w-0 truncate leading-tight font-bold text-black",
+              textClass,
+            )}
           >
             {player.name}
           </span>

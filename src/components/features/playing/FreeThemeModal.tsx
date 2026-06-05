@@ -24,9 +24,12 @@ export function FreeThemeModal({ onClose, onSave }: FreeThemeModalProps) {
   };
 
   return (
-    <div className="ito-modal-backdrop" onClick={onClose}>
+    <div
+      className="ito-modal-backdrop fixed inset-0 z-[100] flex items-center justify-center px-4"
+      onClick={onClose}
+    >
       <div
-        className="ito-modal-card max-w-sm gap-4"
+        className="ito-modal-card flex w-full max-w-sm flex-col gap-4 p-6"
         onClick={(event) => event.stopPropagation()}
       >
         <h2 className="ito-modal-title">フリーお題作成</h2>
@@ -38,7 +41,7 @@ export function FreeThemeModal({ onClose, onSave }: FreeThemeModalProps) {
             value={customTitle}
             onChange={(e) => setCustomTitle(e.target.value)}
             maxLength={30}
-            className="ito-modal-input p-2 text-lg"
+            className="ito-modal-input w-full p-2 text-lg"
             placeholder="例：好きなアニメは？"
           />
         </div>
@@ -53,7 +56,7 @@ export function FreeThemeModal({ onClose, onSave }: FreeThemeModalProps) {
               value={customLow}
               onChange={(e) => setCustomLow(e.target.value)}
               maxLength={15}
-              className="ito-modal-input p-2 text-lg"
+              className="ito-modal-input w-full p-2 text-lg"
               placeholder="例：おもしろくない"
             />
           </div>
@@ -66,7 +69,7 @@ export function FreeThemeModal({ onClose, onSave }: FreeThemeModalProps) {
               value={customHigh}
               onChange={(e) => setCustomHigh(e.target.value)}
               maxLength={15}
-              className="ito-modal-input p-2 text-lg"
+              className="ito-modal-input w-full p-2 text-lg"
               placeholder="例：神アニメ"
             />
           </div>
