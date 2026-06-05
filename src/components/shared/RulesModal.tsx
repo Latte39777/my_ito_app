@@ -28,7 +28,7 @@ export function RulesModal() {
           onClick={handleBackdropClick}
         >
           <div
-            className="ito-modal-card flex w-full max-h-[80vh] max-w-md flex-col gap-5 overflow-y-auto p-6"
+            className="ito-modal-card flex w-full max-w-md max-h-[80vh] flex-col gap-5 overflow-y-auto p-6"
             onClick={(event) => event.stopPropagation()}
           >
             <h2 className="ito-modal-title">遊び方・ルール</h2>

@@ -78,7 +78,7 @@ export function IconSelector({
                   }}
                   title={label}
                   className={cn(
-                    "aspect-square flex items-center justify-center rounded-xl border-2 border-black transition-all",
+                    "flex aspect-square items-center justify-center rounded-xl border-2 border-black transition-all",
                     isSelected
                       ? "scale-105 bg-black text-white shadow-[0_4px_0_0_rgba(0,0,0,0.3)]"
                       : "bg-white hover:bg-gray-100",
