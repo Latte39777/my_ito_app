@@ -78,7 +78,7 @@ export default function RoomPage() {
           <p>プレイヤー情報が見つかりません。</p>
           <button
             onClick={() => router.push("/")}
-            className="ito-btn ito-btn-outline"
+            className="ito-btn ito-btn-outline flex w-full items-center justify-center gap-2"
           >
             トップへ戻る
           </button>

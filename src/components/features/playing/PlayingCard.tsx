@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { cn } from "@/lib/utils";
 
 interface PlayingCardProps {
   card: number | null;
@@ -71,11 +72,14 @@ export function PlayingCard({ card, isCardOpen }: PlayingCardProps) {
 
   return (
     <div
-      className={`relative flex h-32 w-24 items-center justify-center overflow-hidden rounded-xl border-2 bg-white transition-all select-none md:h-44 md:w-32 ${borderClass} `}
+      className={cn(
+        "relative flex h-32 w-24 select-none items-center justify-center overflow-hidden rounded-xl border-2 bg-white transition-all md:h-44 md:w-32",
+        borderClass,
+      )}
     >
       
       <svg
-        className={`absolute top-0 left-0 h-10 w-10 md:h-16 md:w-16 ${ornamentColor}`}
+        className={cn("absolute top-0 left-0 h-10 w-10 md:h-16 md:w-16", ornamentColor)}
         viewBox="0 0 16 16"
         fill="currentColor"
       >
@@ -84,7 +88,10 @@ export function PlayingCard({ card, isCardOpen }: PlayingCardProps) {
 
       
       <svg
-        className={`absolute right-0 bottom-0 h-10 w-10 rotate-180 md:h-16 md:w-16 ${ornamentColor}`}
+        className={cn(
+          "absolute right-0 bottom-0 h-10 w-10 rotate-180 md:h-16 md:w-16",
+          ornamentColor,
+        )}
         viewBox="0 0 16 16"
         fill="currentColor"
       >
@@ -93,7 +100,7 @@ export function PlayingCard({ card, isCardOpen }: PlayingCardProps) {
 
       
       <svg
-        className={`absolute top-1 left-0 h-6 w-full md:h-8 ${ornamentColor}`}
+        className={cn("absolute top-1 left-0 h-6 w-full md:h-8", ornamentColor)}
         viewBox="0 0 128 32"
         fill="currentColor"
         stroke="currentColor"
@@ -108,7 +115,10 @@ export function PlayingCard({ card, isCardOpen }: PlayingCardProps) {
 
       
       <svg
-        className={`absolute bottom-1 left-0 h-6 w-full rotate-180 md:h-8 ${ornamentColor}`}
+        className={cn(
+          "absolute bottom-1 left-0 h-6 w-full rotate-180 md:h-8",
+          ornamentColor,
+        )}
         viewBox="0 0 128 32"
         fill="currentColor"
         stroke="currentColor"
@@ -123,7 +133,10 @@ export function PlayingCard({ card, isCardOpen }: PlayingCardProps) {
 
       
       <span
-        className={`font-hana z-10 text-5xl tracking-tighter drop-shadow-sm md:text-6xl ${textColor}`}
+        className={cn(
+          "font-hana z-10 text-5xl tracking-tighter drop-shadow-sm md:text-6xl",
+          textColor,
+        )}
       >
         {card !== null ? card : "?"}
       </span>

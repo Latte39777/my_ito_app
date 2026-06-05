@@ -1,6 +1,7 @@
 "use client";
 
 import { PlayingCard } from "./PlayingCard";
+import { cn } from "@/lib/utils";
 
 interface MyCardBoxProps {
   card: number | null;
@@ -34,7 +35,11 @@ export function MyCardBox({
       </div>
 
       <button
-        className={`ito-btn ito-btn-dark mt-2 w-full py-0.5 text-xs transition-all md:mt-5 md:py-2.5 md:text-sm lg:mt-6 lg:py-3 ${canShowButton ? "" : "invisible"} ${isLoading ? "cursor-not-allowed opacity-50" : ""} `}
+        className={cn(
+          "ito-btn ito-btn-dark mt-2 flex w-full items-center justify-center gap-2 py-0.5 text-xs transition-all md:mt-5 md:py-2.5 md:text-sm lg:mt-6 lg:py-3",
+          !canShowButton && "invisible",
+          isLoading && "cursor-not-allowed opacity-50",
+        )}
         disabled={!canShowButton || isLoading}
         onClick={isLoading ? undefined : onOpenCards}
       >

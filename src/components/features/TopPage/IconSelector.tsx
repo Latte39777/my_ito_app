@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { AVAILABLE_ICONS } from "@/data/icon";
+import { cn } from "@/lib/utils";
 
 interface IconSelectorProps {
   selectedIcon: string;
@@ -45,7 +46,10 @@ export function IconSelector({
       >
         <SelectedIcon size={24} className={selectedData.color} />
         <span
-          className={`text-black text-xs transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+          className={cn(
+            "text-xs text-black transition-transform duration-200",
+            isOpen && "rotate-180",
+          )}
         >
           ▼
         </span>
@@ -73,11 +77,12 @@ export function IconSelector({
                     setIsOpen(false);
                   }}
                   title={label}
-                  className={`flex items-center justify-center aspect-square rounded-xl border-2 border-black transition-all ${
+                  className={cn(
+                    "aspect-square flex items-center justify-center rounded-xl border-2 border-black transition-all",
                     isSelected
-                      ? "bg-black text-white scale-105 shadow-[0_4px_0_0_rgba(0,0,0,0.3)]"
-                      : "bg-white hover:bg-gray-100"
-                  }`}
+                      ? "scale-105 bg-black text-white shadow-[0_4px_0_0_rgba(0,0,0,0.3)]"
+                      : "bg-white hover:bg-gray-100",
+                  )}
                 >
                   <Icon
                     size={24}

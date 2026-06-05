@@ -64,7 +64,7 @@ export function HostCreateRoom({ userName, iconId }: HostCreateRoomProps) {
     <button
       onClick={handleCreate}
       disabled={loading || !userName.trim()}
-      className="ito-btn ito-btn-primary px-4 py-4 disabled:opacity-50"
+      className="ito-btn ito-btn-primary flex w-full items-center justify-center gap-2 px-4 py-4 disabled:opacity-50"
     >
       {loading ? "部屋を作成中..." : "新しく部屋を作る（ホスト）"}
     </button>

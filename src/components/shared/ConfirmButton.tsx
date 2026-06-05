@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 interface ConfirmButtonProps {
   onConfirm: () => void;
@@ -41,7 +42,11 @@ export function ConfirmButton({
     <button
       onClick={handleClick}
       disabled={disabled}
-      className={`${baseClassName} ${isConfirming ? confirmClassName : ""} transition-all duration-300`}
+      className={cn(
+        baseClassName,
+        isConfirming && confirmClassName,
+        "transition-all duration-300",
+      )}
     >
       {isConfirming ? confirmText : defaultText}
     </button>

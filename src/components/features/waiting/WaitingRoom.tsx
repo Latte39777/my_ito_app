@@ -25,7 +25,7 @@ export function WaitingRoom({
   isProcessing = false,
 }: WaitingRoomProps) {
   return (
-    <div className="ito-narrow-container pt-10">
+    <div className="mx-auto flex w-full max-w-[400px] flex-1 flex-col items-center p-5 pt-10">
       <h1 className="font-kei mb-6 text-4xl font-black tracking-[2px] text-black">
         ナンバートーク
       </h1>
@@ -50,7 +50,7 @@ export function WaitingRoom({
               onConfirm={onStartGame}
               defaultText={isProcessing ? "処理中..." : "始める"}
               confirmText="ゲームを始める？"
-              baseClassName="ito-btn ito-btn-primary py-3 px-4 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+              baseClassName="ito-btn ito-btn-primary flex w-full items-center justify-center gap-2 px-4 py-3 font-bold disabled:cursor-not-allowed disabled:opacity-50"
               confirmClassName="!bg-blue-700" 
               disabled={isProcessing}
             />
@@ -59,14 +59,14 @@ export function WaitingRoom({
               onConfirm={onDisbandRoom}
               defaultText={isProcessing ? "処理中..." : "解散する"}
               confirmText="本当に解散する？"
-              baseClassName="ito-btn ito-btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
+              baseClassName="ito-btn ito-btn-outline flex w-full items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-50"
               confirmClassName="!bg-red-500 !text-white !border-black" 
               disabled={isProcessing}
             />
           </>
         ) : (
           <>
-            <div className="ito-btn cursor-not-allowed border-none bg-gray-300 text-center text-gray-600">
+            <div className="ito-btn flex w-full items-center justify-center gap-2 cursor-not-allowed border-none bg-gray-300 text-center text-gray-600">
               ホストの開始を待っています...
             </div>
             
@@ -74,7 +74,7 @@ export function WaitingRoom({
               onConfirm={onDisbandRoom}
               defaultText={isProcessing ? "処理中..." : "退出する"}
               confirmText="本当に退出する？"
-              baseClassName="ito-btn ito-btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
+              baseClassName="ito-btn ito-btn-outline flex w-full items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-50"
               confirmClassName="!bg-red-500 !text-white !border-black" 
               disabled={isProcessing}
             />
