@@ -52,17 +52,16 @@ export function SettingsButton({
         <TbSettingsFilled size={24} className="text-gray-700" />
       </button>
 
-      
       {isOpen && (
-        <div className="ito-modal-backdrop" onClick={handleBackdropClick}>
+        <div className="ito-modal-backdrop px-4" onClick={handleBackdropClick}>
           <div
-            className="ito-modal-card max-w-sm gap-5"
+            className="ito-modal-card flex w-full max-w-sm flex-col gap-4 p-5 md:gap-5 md:p-6"
             onClick={(event) => event.stopPropagation()}
           >
-            <h2 className="ito-modal-title">設定</h2>
+            <h2 className="ito-modal-title text-lg md:text-xl">設定</h2>
 
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-bold text-gray-500">
+            <div className="flex flex-col gap-1.5 md:gap-2">
+              <label className="text-xs font-bold text-gray-500 md:text-sm">
                 名前の変更
               </label>
               <input
@@ -70,23 +69,23 @@ export function SettingsButton({
                 maxLength={12}
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
-                className="ito-modal-input p-3 text-xl"
+                className="ito-modal-input p-2.5 text-base md:p-3 md:text-xl"
                 placeholder="新しい名前"
               />
             </div>
 
-            <div className="mt-2 flex justify-end gap-3">
+            <div className="mt-2 flex w-full gap-2 md:mt-4 md:justify-end md:gap-3">
               <button
                 onClick={() => setIsOpen(false)}
                 disabled={isSaving}
-                className="ito-modal-btn-secondary px-5 py-2"
+                className="ito-modal-btn-secondary flex-1 px-4 py-2.5 text-sm md:flex-none md:px-5 md:py-2 md:text-base"
               >
                 キャンセル
               </button>
               <button
                 onClick={handleSave}
                 disabled={isSaving || !editName.trim()}
-                className="ito-modal-btn-primary px-5 py-2"
+                className="ito-modal-btn-primary flex-1 px-4 py-2.5 text-sm md:flex-none md:px-5 md:py-2 md:text-base"
               >
                 {isSaving ? "保存中..." : "保存する"}
               </button>

@@ -41,24 +41,24 @@ export function IconSelector({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 p-2 rounded-lg hover:bg-black/10 transition-colors"
+        className="flex items-center gap-1 rounded-lg p-2 transition-colors hover:bg-black/10"
       >
         <SelectedIcon size={24} className={selectedData.color} />
         <span
-          className={`text-black text-xs transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+          className={`text-xs text-black transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         >
           ▼
         </span>
       </button>
 
       {isOpen && (
-        <div className="absolute top-[110%] left-0 w-[260px] ito-box flex flex-col gap-4 p-5 z-10">
-          <span className="text-xs font-bold text-gray-500 mb-1">
+        <div className="ito-box absolute top-[110%] right-0 z-50 flex w-[260px] flex-col gap-4 p-5 sm:right-auto sm:left-0">
+          <span className="mb-1 text-xs font-bold text-gray-500">
             アイコンを選択
           </span>
 
           <div
-            className="grid grid-cols-5 gap-2 max-h-[220px] overflow-y-auto pr-1"
+            className="grid max-h-[220px] grid-cols-5 gap-2 overflow-y-auto pr-1"
             style={{ scrollbarWidth: "thin" }}
           >
             {AVAILABLE_ICONS.map(({ id, Icon, color, label }) => {
@@ -73,9 +73,9 @@ export function IconSelector({
                     setIsOpen(false);
                   }}
                   title={label}
-                  className={`flex items-center justify-center aspect-square rounded-xl border-2 border-black transition-all ${
+                  className={`flex aspect-square items-center justify-center rounded-xl border-2 border-black transition-all ${
                     isSelected
-                      ? "bg-black text-white scale-105 shadow-[0_4px_0_0_rgba(0,0,0,0.3)]"
+                      ? "scale-105 bg-black text-white shadow-[0_4px_0_0_rgba(0,0,0,0.3)]"
                       : "bg-white hover:bg-gray-100"
                   }`}
                 >
