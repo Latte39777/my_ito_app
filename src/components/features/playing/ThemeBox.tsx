@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { THEMES_LIST } from "@/data/themes";
-import { Theme } from "@/types/schema";
+import { Theme, Player } from "@/types/schema";
+import { replaceNamePlaceholder } from "@/lib/gameLogic";
 import { FreeThemeModal } from "./FreeThemeModal";
 
 interface ThemeBoxProps {
   theme: Theme | null;
+  players: Player[];
   isHost: boolean;
   onChangeTheme?: (newTheme: Theme) => void;
   isProcessing?: boolean;
@@ -15,12 +17,15 @@ interface ThemeBoxProps {
 
 export function ThemeBox({
   theme,
+  players,
   isHost,
   onChangeTheme,
   isProcessing = false,
   loadingAction,
 }: ThemeBoxProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const displayTheme = theme ? replaceNamePlaceholder(theme, players) : null;
 
   const handleRandomTheme = () => {
     if (!onChangeTheme || isProcessing) return;
@@ -39,7 +44,7 @@ export function ThemeBox({
       <div className="ito-box relative flex w-full flex-col p-3 md:min-h-[120px] md:p-4 lg:min-h-[130px] lg:p-5">
         <div className="flex flex-1 flex-col items-center justify-center">
           <h3 className="font-hana text-center text-xl leading-tight font-black text-black md:text-2xl lg:text-3xl">
-            お題：{theme?.title || "未設定"}
+            お題：{displayTheme?.title || "未設定"}
           </h3>
           <p className="font-hana mt-1 text-center text-sm leading-tight font-bold break-words text-gray-800 md:mt-2 md:text-base lg:text-lg">
             1：{theme?.low || "min"} 〜 100：{theme?.high || "max"}

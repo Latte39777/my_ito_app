@@ -45,22 +45,21 @@ export function WaitingRoom({
       <div className="mb-8 flex w-full flex-col gap-4">
         {isHost ? (
           <>
-            
             <ConfirmButton
               onConfirm={onStartGame}
               defaultText={isProcessing ? "処理中..." : "始める"}
               confirmText="ゲームを始める？"
               baseClassName="ito-btn ito-btn-primary py-3 px-4 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
-              confirmClassName="!bg-blue-700" 
+              confirmClassName="!bg-blue-700"
               disabled={isProcessing}
             />
-            
+
             <ConfirmButton
               onConfirm={onDisbandRoom}
               defaultText={isProcessing ? "処理中..." : "解散する"}
               confirmText="本当に解散する？"
               baseClassName="ito-btn ito-btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
-              confirmClassName="!bg-red-500 !text-white !border-black" 
+              confirmClassName="!bg-red-500 !text-white !border-black"
               disabled={isProcessing}
             />
           </>
@@ -69,13 +68,13 @@ export function WaitingRoom({
             <div className="ito-btn cursor-not-allowed border-none bg-gray-300 text-center text-gray-600">
               ホストの開始を待っています...
             </div>
-            
+
             <ConfirmButton
               onConfirm={onDisbandRoom}
               defaultText={isProcessing ? "処理中..." : "退出する"}
               confirmText="本当に退出する？"
               baseClassName="ito-btn ito-btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
-              confirmClassName="!bg-red-500 !text-white !border-black" 
+              confirmClassName="!bg-red-500 !text-white !border-black"
               disabled={isProcessing}
             />
           </>

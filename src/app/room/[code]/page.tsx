@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { AnimatedBackground } from "@/components/shared/AnimatedBackground";
-import { WaitingRoom } from "@/components/features/waiting/WaitingRoom";
+import { WaitingRoom } from "@/components/features/playing/waiting/WaitingRoom";
 import { PlayingRoom } from "@/components/features/playing/PlayingRoom";
 import { SettingsButton } from "@/components/shared/SettingsButton";
 import { useRoom } from "@/app/hooks/useRoom";

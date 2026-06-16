@@ -56,6 +56,7 @@ export function PlayingRoom({
           <div className="order-1 md:order-none">
             <ThemeBox
               theme={room.current_theme}
+              players={players}
               isHost={isHost}
               onChangeTheme={actions.handleChangeTheme}
               isProcessing={actions.isProcessing}
