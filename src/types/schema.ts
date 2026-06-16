@@ -5,7 +5,7 @@ export const themeSchema = z.object({
   title: z
     .string()
     .min(1, "お題を入力してください")
-    .max(30, "お題は30文字以内です"),
+    .max(50, "お題は50文字以内です"),
   low: z
     .string()
     .min(1, "1側の基準を入力してください")
@@ -22,25 +22,25 @@ export const playerSchema = z.object({
     .string()
     .min(1, "名前を入力してください")
     .max(12, "名前は12文字以内です"),
-  icon: z.string(), 
-  isHost: z.boolean(), 
-  card: z.number().int().min(1).max(100).nullable(), 
-  answerText: z.string().max(30, "例えは30文字以内で入力してください"), 
-  isCardOpen: z.boolean(), 
-  isOnline: z.boolean(), 
-  isSpectating: z.boolean(), 
+  icon: z.string(),
+  isHost: z.boolean(),
+  card: z.number().int().min(1).max(100).nullable(),
+  answerText: z.string().max(30, "例えは30文字以内で入力してください"),
+  isCardOpen: z.boolean(),
+  isOnline: z.boolean(),
+  isSpectating: z.boolean(),
 });
 
 export const roomSchema = z.object({
-  room_code: z.string().length(4), 
-  round_number: z.number().default(1), 
-  status: z.enum(["waiting", "playing"]), 
-  current_theme: themeSchema.nullable(), 
-  life: z.number().int().min(-99).max(99), 
-  players: z.array(playerSchema), 
-  deck: z.array(z.number().int().min(1).max(100)), 
-  round_started_at: z.number().int().nullable(), 
-  created_at: z.string().optional(), 
+  room_code: z.string().length(4),
+  round_number: z.number().default(1),
+  status: z.enum(["waiting", "playing"]),
+  current_theme: themeSchema.nullable(),
+  life: z.number().int().min(-99).max(99),
+  players: z.array(playerSchema),
+  deck: z.array(z.number().int().min(1).max(100)),
+  round_started_at: z.number().int().nullable(),
+  created_at: z.string().optional(),
 });
 
 export type Theme = z.infer<typeof themeSchema>;

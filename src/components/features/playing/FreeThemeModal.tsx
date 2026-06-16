@@ -39,7 +39,7 @@ export function FreeThemeModal({ onClose, onSave }: FreeThemeModalProps) {
             type="text"
             value={customTitle}
             onChange={(e) => setCustomTitle(e.target.value)}
-            maxLength={30}
+            maxLength={50}
             className="ito-modal-input p-2.5 text-base md:p-3 md:text-lg"
             placeholder="例：好きなアニメは？"
           />
